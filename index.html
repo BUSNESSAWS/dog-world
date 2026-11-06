@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,12 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  
-  <!-- Standalone Pre-compiled Tailwind CSS (Direct file:/// ebong mobile/PC sobjaygay kaj korbe) -->
+  <!-- Pre-compiled Tailwind CSS + Custom Orange Theme Rules -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 
   <!-- QRious Engine (QR Generator) -->
@@ -26,17 +26,18 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
   <style>
-    /* Direct Offline & Fallback Styles */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       margin: 0;
       padding: 0;
-      background-color: #f1f5f9;
-      color: #1e293b;
+      background-color: #f8fafc;
+      color: #0f172a;
     }
     .hidden {
       display: none !important;
@@ -45,14 +46,81 @@
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(6px);
     }
-    .bg-brand-500 { background-color: #f97316; }
-    .bg-brand-600 { background-color: #ea580c; }
-    .border-brand-500 { border-color: #f97316; }
-    .text-brand-600 { color: #ea580c; }
-   
-    .rounded-3xl { border-radius: 1.5rem; }
-    .rounded-2xl { border-radius: 1rem; }
-   
+
+    /* Vibrant Orange Gradients & Colors (Works Offline & Online) */
+    .brand-gradient {
+      background: linear-gradient(135deg, #ff6b00 0%, #f97316 50%, #f59e0b 100%) !important;
+    }
+    .dog-logo-box {
+      background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 20px -4px rgba(249, 115, 22, 0.45);
+    }
+    .text-orange-brand {
+      color: #f97316 !important;
+    }
+    .bg-orange-soft {
+      background-color: #fff7ed !important;
+    }
+    .border-orange-soft {
+      border-color: #fed7aa !important;
+    }
+
+    /* Animated Orange Button */
+    .btn-orange-animated {
+      background: linear-gradient(270deg, #ea580c, #f97316, #fbbf24, #f97316);
+      background-size: 300% 300%;
+      color: #ffffff !important;
+      animation: gradient-shift 4s ease infinite;
+      box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-orange-animated:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 24px -5px rgba(249, 115, 22, 0.55);
+    }
+    .btn-orange-animated:active {
+      transform: scale(0.97);
+    }
+
+    /* Login Page Orange Animations */
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(6deg); }
+    }
+    @keyframes pulse-orange-ring {
+      0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6); }
+      70% { box-shadow: 0 0 0 18px rgba(249, 115, 22, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+    }
+    @keyframes blob-bounce {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(15px, -15px) scale(1.08); }
+    }
+    .animate-float {
+      animation: float-slow 3s ease-in-out infinite;
+    }
+    .animate-orange-ring {
+      animation: pulse-orange-ring 2s infinite;
+    }
+    .animate-blob {
+      animation: blob-bounce 6s infinite ease-in-out;
+    }
+    .login-card-glow {
+      box-shadow: 0 20px 50px -12px rgba(249, 115, 22, 0.28);
+      border: 2px solid #ffedd5;
+    }
+    .uppercase-input {
+      text-transform: uppercase;
+    }
+    .rounded-2xl { border-radius: 1rem !important; }
+    .rounded-3xl { border-radius: 1.5rem !important; }
+
     @keyframes pulse-fast {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.85; transform: scale(1.02); }
@@ -62,50 +130,60 @@
     }
   </style>
 </head>
-<body class="min-h-screen antialiased flex flex-col selection:bg-orange-500 selection:text-white">
+<body class="min-h-screen antialiased flex flex-col">
 
-  <!-- 1. SPLASH SCREEN -->
-  <div id="splash-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-orange-500 to-amber-600 flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
+  <!-- ======================================================== -->
+  <!-- 1. SPLASH SCREEN (ANIMATED ORANGE DOG WORLD)             -->
+  <!-- ======================================================== -->
+  <div id="splash-screen" class="fixed inset-0 z-50 brand-gradient flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
     <div class="relative flex flex-col items-center text-center">
-      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white bg-opacity-20 rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-bounce">
-        <i class="fa-solid fa-paw"></i>
+      <!-- Original Dog Logo -->
+      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white bg-opacity-20 rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-bounce border border-white border-opacity-30">
+        <i class="fa-solid fa-dog"></i>
       </div>
 
       <h1 class="text-4xl sm:text-6xl font-black tracking-tight">
-        DOG <span class="text-amber-200">WORLD</span>
+        DOG <span class="text-yellow-200">WORLD</span>
       </h1>
-      <p class="mt-2 text-sm sm:text-base font-semibold tracking-wide text-orange-100">
-        আমার কুকুর, আমার পরিবার — ডিজিটাল ক্যানাইন রেজিস্ট্রি
+      <p class="mt-2 text-sm sm:text-base font-semibold tracking-wide text-yellow-100">
+        MY DOG, MY FAMILY — DIGITAL CANINE REGISTRY
       </p>
 
       <div class="mt-8 flex items-center space-x-2">
         <div class="w-3 h-3 bg-white rounded-full animate-ping"></div>
-        <div class="w-3 h-3 bg-amber-200 rounded-full animate-ping"></div>
+        <div class="w-3 h-3 bg-yellow-200 rounded-full animate-ping"></div>
         <div class="w-3 h-3 bg-white rounded-full animate-ping"></div>
       </div>
 
-      <button onclick="dismissSplash()" class="mt-10 px-5 py-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-xs font-bold uppercase tracking-wider border border-white border-opacity-30 transition">
+      <button onclick="dismissSplash()" class="mt-10 px-6 py-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-xs font-bold uppercase tracking-wider border border-white border-opacity-40 transition">
         Skip &nbsp;<i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
   </div>
 
-  <!-- 2. NOTIFICATION TOAST -->
+  <!-- ======================================================== -->
+  <!-- 2. NOTIFICATION TOAST POPUP                             -->
+  <!-- ======================================================== -->
   <div id="toast" class="fixed top-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center space-x-3 transition-all duration-300">
     <i id="toast-icon" class="text-lg"></i>
     <span id="toast-msg"></span>
   </div>
 
-  <!-- 3. TOP NAVBAR -->
+  <!-- ======================================================== -->
+  <!-- 3. TOP NAVBAR (WITH ORIGINAL DOG LOGO)                   -->
+  <!-- ======================================================== -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="goToHome()">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-400 text-white flex items-center justify-center text-lg shadow-md">
+        <!-- Original Orange Dog Logo -->
+        <div class="w-11 h-11 rounded-2xl dog-logo-box flex items-center justify-center text-xl">
           <i class="fa-solid fa-dog"></i>
         </div>
         <div>
-          <span class="text-xl font-black tracking-tight text-gray-900 block leading-none">DOG <span class="text-orange-500">WORLD</span></span>
-          <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Kennel Registry</span>
+          <span class="text-xl font-black tracking-tight text-gray-900 block leading-none">
+            DOG <span class="text-orange-brand">WORLD</span>
+          </span>
+          <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Canine Registry</span>
         </div>
       </div>
 
@@ -113,15 +191,38 @@
     </div>
   </header>
 
-  <!-- 4. MAIN CONTAINER -->
+  <!-- ======================================================== -->
+  <!-- 4. MAIN CONTAINER (DYNAMIC VIEWS)                        -->
+  <!-- ======================================================== -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
-    <!-- VIEW A: AUTHENTICATION -->
-    <div id="view-auth" class="hidden max-w-md mx-auto my-8">
-      <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
+    <!-- VIEW A: AUTHENTICATION (WITH ORANGE ANIMATION) -->
+    <div id="view-auth" class="hidden max-w-md mx-auto my-6 relative">
+     
+      <!-- Animated Orange Background Blobs -->
+      <div class="absolute -top-6 -left-6 w-32 h-32 rounded-full brand-gradient opacity-20 blur-xl animate-blob pointer-events-none"></div>
+      <div class="absolute -bottom-6 -right-6 w-36 h-36 rounded-full brand-gradient opacity-20 blur-xl animate-blob pointer-events-none"></div>
+
+      <div class="bg-white rounded-3xl login-card-glow overflow-hidden relative z-10">
        
-        <div class="grid grid-cols-2 p-1.5 bg-gray-100 border-b border-gray-200 text-xs font-bold">
-          <button id="tab-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-2xl bg-white text-orange-600 shadow transition">
+        <!-- Animated Orange Banner Header -->
+        <div class="brand-gradient p-6 text-white text-center relative overflow-hidden">
+          <!-- Floating Animated Paws in Background -->
+          <i class="fa-solid fa-paw text-white opacity-10 text-4xl absolute top-2 left-4 animate-float"></i>
+          <i class="fa-solid fa-bone text-white opacity-10 text-3xl absolute bottom-2 right-6 animate-float"></i>
+          <i class="fa-solid fa-paw text-white opacity-10 text-2xl absolute top-4 right-12 animate-ping"></i>
+
+          <!-- Center Animated Dog Emblem -->
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-white text-orange-brand flex items-center justify-center text-3xl shadow-lg animate-orange-ring mb-3">
+            <i class="fa-solid fa-dog animate-bounce"></i>
+          </div>
+          <h2 class="text-2xl font-black tracking-tight">DOG WORLD</h2>
+          <p class="text-xs text-yellow-100 font-semibold mt-0.5">Official Digital Canine Portal</p>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="grid grid-cols-2 p-1.5 bg-orange-soft border-b border-orange-soft text-xs font-bold">
+          <button id="tab-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-2xl bg-white text-orange-brand shadow transition">
             Login
           </button>
           <button id="tab-signup" onclick="switchAuthTab('signup')" class="py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition">
@@ -130,7 +231,7 @@
         </div>
 
         <div class="p-6 sm:p-8 space-y-4">
-          <button type="button" onclick="handleGoogleSignIn()" class="w-full py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-2">
+          <button type="button" onclick="handleGoogleSignIn()" class="w-full py-2.5 px-4 bg-white border-2 border-orange-soft hover:bg-orange-soft text-gray-700 font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-2">
             <i class="fa-brands fa-google text-red-500 text-base"></i>
             <span>Continue with Google</span>
           </button>
@@ -141,55 +242,59 @@
             <div class="flex-1 border-t border-gray-200"></div>
           </div>
 
+          <!-- Login Form -->
           <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
             <div>
-              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email Address</label>
               <div class="relative">
-                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
-                <input type="email" id="login-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-orange-brand text-xs"></i>
+                <input type="email" id="login-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
               <div class="relative">
-                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
-                <input type="password" id="login-password" required placeholder="Enter password" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-orange-brand text-xs"></i>
+                <input type="password" id="login-password" required placeholder="Enter your password" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
               </div>
             </div>
 
-            <button type="submit" id="btn-login-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
-              <span>Log In</span>
+            <button type="submit" id="btn-login-submit" class="w-full py-3.5 btn-orange-animated font-extrabold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-paw"></i>
+              <span>Log In to Dog World</span>
             </button>
           </form>
 
+          <!-- Signup Form -->
           <form id="form-signup" onsubmit="handleSignupSubmit(event)" class="hidden space-y-4">
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Full Owner Name</label>
               <div class="relative">
-                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
-                <input type="text" id="signup-name" required placeholder="Enter full name" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-orange-brand text-xs"></i>
+                <input type="text" id="signup-name" required placeholder="Enter full name" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email Address</label>
               <div class="relative">
-                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
-                <input type="email" id="signup-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-orange-brand text-xs"></i>
+                <input type="email" id="signup-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
               <div class="relative">
-                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
-                <input type="password" id="signup-password" required minlength="6" placeholder="Create password (min 6 characters)" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-orange-brand text-xs"></i>
+                <input type="password" id="signup-password" required minlength="6" placeholder="Create password (min 6 characters)" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
               </div>
             </div>
 
-            <button type="submit" id="btn-signup-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
-              <span>Create Account</span>
+            <button type="submit" id="btn-signup-submit" class="w-full py-3.5 btn-orange-animated font-extrabold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-paw"></i>
+              <span>Create Free Account</span>
             </button>
           </form>
         </div>
@@ -197,34 +302,34 @@
       </div>
     </div>
 
-    <!-- VIEW B: DASHBOARD -->
+    <!-- VIEW B: KENNEL DASHBOARD (HOME PAGE) -->
     <div id="view-dashboard" class="hidden space-y-6">
      
       <div class="bg-gray-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
         <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <div class="flex items-center space-x-2 text-xs font-bold text-amber-400 tracking-wider uppercase mb-1">
-              <i class="fa-solid fa-shield-dog"></i>
+            <div class="flex items-center space-x-2 text-xs font-bold text-yellow-400 tracking-wider uppercase mb-1">
+              <i class="fa-solid fa-dog"></i>
               <span id="dash-owner-greeting">Welcome, Dog Owner</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black">Your Registered Kennel</h2>
             <p class="text-xs sm:text-sm text-gray-300 mt-1 font-medium">
-              আপনি সর্বোচ্চ ১০টি কুকুর রেজিস্ট্রেশন করতে পারবেন (Firebase Cloud-এ সংরক্ষিত)
+              You can register up to 10 dogs in your cloud kennel account
             </p>
           </div>
 
           <div class="flex items-center space-x-4 bg-white bg-opacity-10 px-5 py-3 rounded-2xl border border-white border-opacity-10">
             <div class="text-right">
               <div class="text-xs uppercase font-bold tracking-wider text-gray-300">Kennel Capacity</div>
-              <div id="dash-count-pill" class="text-xl sm:text-2xl font-black text-amber-300">0 / 10</div>
+              <div id="dash-count-pill" class="text-xl sm:text-2xl font-black text-yellow-300">0 / 10</div>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center text-xl text-white shadow-md">
+            <div class="w-12 h-12 rounded-xl dog-logo-box flex items-center justify-center text-xl">
               <i class="fa-solid fa-paw"></i>
             </div>
           </div>
         </div>
 
-        <i class="fa-solid fa-dog absolute -right-8 -bottom-8 text-white text-opacity-5 text-9xl pointer-events-none"></i>
+        <i class="fa-solid fa-dog absolute -right-6 -bottom-6 text-white opacity-10 text-9xl pointer-events-none"></i>
       </div>
 
       <!-- Dogs Grid -->
@@ -235,17 +340,21 @@
 
     </div>
 
-    <!-- VIEW C: ADD / EDIT PET FORM -->
+    <!-- VIEW C: ADD / EDIT PET FORM (NO PHOTO UPLOAD, CAPITAL LETTERS) -->
     <div id="view-add-pet" class="hidden max-w-2xl mx-auto">
       <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
        
-        <div class="bg-gradient-to-r from-orange-500 to-amber-600 p-6 text-white flex items-center justify-between">
-          <div>
-            <div class="text-xs uppercase font-extrabold tracking-widest text-amber-100 flex items-center space-x-1.5">
-              <i class="fa-solid fa-shield-paw"></i>
-              <span id="form-subtitle">Canine Passport Registration</span>
+        <div class="brand-gradient p-6 text-white flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-11 h-11 rounded-2xl bg-white bg-opacity-20 flex items-center justify-center text-2xl">
+              <i class="fa-solid fa-dog"></i>
             </div>
-            <h2 id="form-main-title" class="text-xl sm:text-2xl font-black mt-1">Add a Pet to Dog World</h2>
+            <div>
+              <div class="text-xs uppercase font-extrabold tracking-widest text-yellow-100">
+                <span id="form-subtitle">Canine Passport Registration</span>
+              </div>
+              <h2 id="form-main-title" class="text-xl sm:text-2xl font-black">Add a Pet to Dog World</h2>
+            </div>
           </div>
           <button onclick="goToHome()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
             <i class="fa-solid fa-xmark text-sm"></i>
@@ -253,52 +362,30 @@
         </div>
 
         <form id="form-add-dog" onsubmit="handleSaveDogSubmit(event)" class="p-6 sm:p-8 space-y-6">
-         
-          <!-- PHOTO UPLOAD -->
-          <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-              Dog Photo (ছবি আপলোড করুন) <span class="text-red-500">*</span>
-            </label>
-            <div class="flex flex-col sm:flex-row items-center gap-4">
-              <div id="photo-preview-box" class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 overflow-hidden relative shadow-inner">
-                <i class="fa-solid fa-camera text-2xl"></i>
-                <span class="text-xs font-bold mt-1">No Image</span>
-                <img id="photo-preview-img" src="" alt="Dog Preview" class="hidden absolute inset-0 w-full h-full object-cover">
-              </div>
 
-              <div class="flex-1 w-full space-y-2">
-                <input type="file" id="dog-photo-input" accept="image/*" onchange="handlePhotoUpload(this)" class="block w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 cursor-pointer">
-                <p class="text-xs text-gray-400">
-                  <i class="fa-solid fa-cloud-arrow-up text-orange-400 mr-1"></i>
-                  ছবিটি Firebase Cloud Storage-এ অটোমেটিক আপলোড হবে।
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- BASIC DETAILS -->
+          <!-- SECTION 1: BASIC DETAILS (DOG NAME IN CAPITAL LETTERS) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Dog Name <span class="text-red-500">*</span>
+                Dog Name (CAPITAL LETTERS) <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="dog-name" required placeholder="Enter dog name" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="text" id="dog-name" required placeholder="ENTER DOG NAME" oninput="this.value = this.value.toUpperCase()" class="uppercase-input w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
             </div>
 
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
                 Date of Birth (DOB) <span class="text-red-500">*</span>
               </label>
-              <input type="date" id="dog-dob" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="date" id="dog-dob" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
             </div>
 
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
                 Gender <span class="text-red-500">*</span>
               </label>
-              <select id="dog-gender" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
-                <option value="Male">Male (পুরুষ)</option>
-                <option value="Female">Female (স্ত্রী)</option>
+              <select id="dog-gender" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
+                <option value="MALE">MALE</option>
+                <option value="FEMALE">FEMALE</option>
               </select>
             </div>
 
@@ -306,67 +393,67 @@
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
                 Owner Name <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="dog-owner" required placeholder="Enter owner full name" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="text" id="dog-owner" required placeholder="Enter owner full name" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
             </div>
           </div>
 
-          <!-- PARENTS LINEAGE -->
-          <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+          <!-- SECTION 2: PARENT DETAILS (FATHER & MOTHER IN CAPITAL LETTERS) -->
+          <div class="p-4 rounded-2xl bg-orange-soft border border-orange-soft space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-gray-800 uppercase tracking-wider">Parents Lineage (বংশ পরিচয়)</span>
+              <span class="text-xs font-bold text-gray-800 uppercase tracking-wider">Parents Lineage (CAPITAL LETTERS)</span>
              
-              <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-gray-200 hover:border-amber-400 transition">
+              <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-gray-200 hover:border-yellow-400 transition">
                 <input type="checkbox" id="dog-adopted-check" onchange="toggleAdoptedMode(this.checked)" class="w-4 h-4 text-orange-500 rounded border-gray-300">
-                <span class="text-xs font-bold text-amber-700">Adopted (বাবা-মা জানা নেই)</span>
+                <span class="text-xs font-bold text-yellow-800">Adopted (Parents Unknown)</span>
               </label>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
-                <label id="lbl-father" class="block text-xs font-bold text-gray-600 mb-1">
-                  Father Name (পিতার নাম) <span id="ast-father" class="text-red-500">*</span>
+                <label id="lbl-father" class="block text-xs font-bold text-gray-700 mb-1">
+                  Father Name <span id="ast-father" class="text-red-500">*</span>
                 </label>
-                <input type="text" id="dog-father" required placeholder="Enter father's name" class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                <input type="text" id="dog-father" required placeholder="ENTER FATHER'S NAME" oninput="this.value = this.value.toUpperCase()" class="uppercase-input w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500 transition">
               </div>
 
               <div>
-                <label id="lbl-mother" class="block text-xs font-bold text-gray-600 mb-1">
-                  Mother Name (মাতার নাম) <span id="ast-mother" class="text-red-500">*</span>
+                <label id="lbl-mother" class="block text-xs font-bold text-gray-700 mb-1">
+                  Mother Name <span id="ast-mother" class="text-red-500">*</span>
                 </label>
-                <input type="text" id="dog-mother" required placeholder="Enter mother's name" class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                <input type="text" id="dog-mother" required placeholder="ENTER MOTHER'S NAME" oninput="this.value = this.value.toUpperCase()" class="uppercase-input w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500 transition">
               </div>
             </div>
           </div>
 
-          <!-- CONTACT & ADDRESS -->
+          <!-- SECTION 3: CONTACT & ADDRESS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
                 Mobile Number <span class="text-red-500">*</span>
               </label>
-              <input type="tel" id="dog-mobile" required placeholder="Enter 10-digit mobile number" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="tel" id="dog-mobile" required placeholder="Enter 10-digit mobile number" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
             </div>
 
             <div>
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Gmail ID <span class="text-red-500">*</span>
+                Email ID <span class="text-red-500">*</span>
               </label>
-              <input type="email" id="dog-gmail" required placeholder="Enter Gmail address" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="email" id="dog-gmail" required placeholder="Enter email address" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition">
             </div>
 
             <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Full Address (ঠিকানা) <span class="text-red-500">*</span>
+                Full Address <span class="text-red-500">*</span>
               </label>
-              <textarea id="dog-address" rows="2" required placeholder="Vill/Para, PO, PS, Dist, Pin Code..." class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition"></textarea>
+              <textarea id="dog-address" rows="2" required placeholder="Street/Village, Post Office, Police Station, District, Pin Code..." class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition"></textarea>
             </div>
           </div>
 
-          <!-- VACCINATION DETAILS -->
+          <!-- SECTION 4: VACCINATION DETAILS -->
           <div id="section-vaccine" class="p-4 rounded-2xl bg-green-50 border border-green-200 space-y-3">
             <div class="flex items-center space-x-2 text-green-900 font-bold text-xs uppercase tracking-wider">
               <i class="fa-solid fa-syringe text-green-600"></i>
-              <span>Vaccination Record (ভ্যাকসিন বিবরণ)</span>
+              <span>Vaccination Record</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -375,9 +462,9 @@
                   1. Vaccine Name <span class="text-red-500">*</span>
                 </label>
                 <select id="dog-vaccine-name" required onchange="handleVaccineChange(this.value)" class="w-full px-3 py-2 bg-white border border-green-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 transition">
-                  <option value="Rabies">Rabies (র‌্যাবিস)</option>
-                  <option value="DHPPi (7-in-1)">DHPPi / 7-in-1</option>
-                  <option value="Other">Other (অন্যান্য)</option>
+                  <option value="Rabies">Rabies</option>
+                  <option value="DHPPi (7-in-1)">DHPPi (7-in-1)</option>
+                  <option value="Other">Other</option>
                 </select>
                 <input type="text" id="dog-vaccine-custom" placeholder="Type vaccine name" class="hidden mt-1.5 w-full px-3 py-1.5 bg-white border border-green-300 rounded-xl text-xs font-semibold">
               </div>
@@ -391,24 +478,24 @@
 
               <div>
                 <label class="block text-xs font-bold text-green-800 mb-1">
-                  3. Next Due Date (+1 Year Auto) <span class="text-red-500">*</span>
+                  3. Next Due Date (+1 Year) <span class="text-red-500">*</span>
                 </label>
                 <input type="date" id="dog-vaccine-next-date" required class="w-full px-3 py-2 bg-white border border-green-300 rounded-xl text-xs font-bold text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
               </div>
             </div>
             <p class="text-xs text-green-700 italic">
-              * Rabies বা DHPPi সিলেক্ট করলে পরবর্তী ডেট অটোমেটিক ১ বছর পর সেট হবে।
+              * Selecting Rabies or DHPPi automatically sets the next booster due date to 1 year later.
             </p>
           </div>
 
-          <!-- Buttons -->
+          <!-- Submit Buttons -->
           <div class="flex items-center justify-end space-x-3 pt-3 border-t border-gray-100">
             <button type="button" onclick="goToHome()" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition">
               Cancel
             </button>
-            <button type="submit" id="btn-submit-dog" class="px-7 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs rounded-xl shadow-md transition flex items-center space-x-2">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              <span id="btn-submit-text">Save to Cloud</span>
+            <button type="submit" id="btn-submit-dog" class="px-7 py-2.5 btn-orange-animated font-black text-xs rounded-xl flex items-center space-x-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span id="btn-submit-text">Save Pet Details</span>
             </button>
           </div>
 
@@ -419,19 +506,23 @@
 
   </main>
 
-  <!-- 5. MODAL: FULL CANINE PASSPORT VIEW -->
+  <!-- ======================================================== -->
+  <!-- 5. MODAL: FULL CANINE PASSPORT VIEW                     -->
+  <!-- ======================================================== -->
   <div id="modal-details" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
     <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto">
      
-      <div class="relative h-48 bg-gray-900">
-        <img id="detail-img" src="" alt="Dog" class="w-full h-full object-cover">
-        <button onclick="closeDetailsModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black bg-opacity-50 text-white flex items-center justify-center hover:bg-opacity-70 transition">
+      <div class="relative h-36 brand-gradient flex items-center px-6">
+        <div class="w-20 h-20 rounded-2xl bg-white bg-opacity-20 border border-white border-opacity-40 flex items-center justify-center text-4xl text-white shadow-lg mr-4">
+          <i class="fa-solid fa-dog"></i>
+        </div>
+        <div class="text-white">
+          <h3 id="detail-name" class="text-2xl font-black uppercase"></h3>
+          <span id="detail-gender-badge" class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-extrabold bg-white bg-opacity-20"></span>
+        </div>
+        <button onclick="closeDetailsModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black bg-opacity-30 text-white flex items-center justify-center hover:bg-opacity-50 transition">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
-        <div class="absolute bottom-3 left-4 text-white">
-          <h3 id="detail-name" class="text-2xl font-black"></h3>
-          <span id="detail-gender-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-white bg-opacity-20"></span>
-        </div>
       </div>
 
       <div class="p-6 space-y-4 text-xs">
@@ -445,12 +536,12 @@
             <strong id="detail-id" class="text-gray-800 text-sm font-mono"></strong>
           </div>
           <div>
-            <span class="text-gray-400 block font-bold uppercase text-xs">Father</span>
-            <strong id="detail-father" class="text-gray-800"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">Father Name</span>
+            <strong id="detail-father" class="text-gray-800 uppercase"></strong>
           </div>
           <div>
-            <span class="text-gray-400 block font-bold uppercase text-xs">Mother</span>
-            <strong id="detail-mother" class="text-gray-800"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">Mother Name</span>
+            <strong id="detail-mother" class="text-gray-800 uppercase"></strong>
           </div>
         </div>
 
@@ -464,7 +555,7 @@
             <strong id="detail-mobile" class="text-gray-800"></strong>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500 font-medium">Gmail:</span>
+            <span class="text-gray-500 font-medium">Email:</span>
             <strong id="detail-gmail" class="text-gray-800"></strong>
           </div>
           <div>
@@ -473,12 +564,12 @@
           </div>
         </div>
 
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5">
-          <div class="font-bold text-amber-900 mb-1 flex items-center justify-between">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-3.5">
+          <div class="font-bold text-yellow-900 mb-1 flex items-center justify-between">
             <span>Latest Vaccine Status</span>
-            <i class="fa-solid fa-syringe text-amber-600"></i>
+            <i class="fa-solid fa-syringe text-yellow-600"></i>
           </div>
-          <div class="text-xs text-amber-800 space-y-1">
+          <div class="text-xs text-yellow-800 space-y-1">
             <div>Vaccine Name: <strong id="detail-latest-vac"></strong></div>
             <div>Date Given: <strong id="detail-given-date"></strong></div>
             <div>Next Due: <strong id="detail-next-date"></strong></div>
@@ -493,7 +584,9 @@
     </div>
   </div>
 
-  <!-- 6. MODAL: VACCINE RECORDS & ADD DOSE -->
+  <!-- ======================================================== -->
+  <!-- 6. MODAL: VACCINE RECORDS & ADD DOSE                    -->
+  <!-- ======================================================== -->
   <div id="modal-vaccines" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
     <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto flex flex-col">
      
@@ -502,7 +595,7 @@
           <i class="fa-solid fa-syringe text-xl"></i>
           <div>
             <h3 id="vac-modal-title" class="text-base font-black">Vaccine History</h3>
-            <span class="text-xs text-green-100 uppercase tracking-widest font-bold">Cloud Dose Management</span>
+            <span class="text-xs text-green-100 uppercase tracking-widest font-bold">Dose Management</span>
           </div>
         </div>
         <button onclick="closeVaccineModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
@@ -557,18 +650,20 @@
     </div>
   </div>
 
-  <!-- 7. MODAL: PVC DOG ID CARD -->
+  <!-- ======================================================== -->
+  <!-- 7. MODAL: PVC DOG ID CARD (100% ENGLISH + DOG EMBLEM)   -->
+  <!-- ======================================================== -->
   <div id="modal-idcard" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl shadow-2xl border border-amber-100 max-w-xl w-full max-h-screen overflow-y-auto flex flex-col">
+    <div class="bg-white rounded-3xl shadow-2xl border border-yellow-100 max-w-xl w-full max-h-screen overflow-y-auto flex flex-col">
      
-      <div class="bg-gradient-to-r from-orange-500 to-amber-600 p-4 text-white sticky top-0 z-20 flex items-center justify-between shadow-sm">
+      <div class="brand-gradient p-4 text-white sticky top-0 z-20 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-2">
           <div class="w-8 h-8 rounded-xl bg-white bg-opacity-20 flex items-center justify-center text-sm shadow-inner">
             <i class="fa-solid fa-id-card"></i>
           </div>
           <div>
             <h3 class="text-sm sm:text-base font-black">Canine PVC Identity Card</h3>
-            <span class="text-xs uppercase font-bold text-amber-100">Ready to Print &amp; Save</span>
+            <span class="text-xs uppercase font-bold text-yellow-100">Ready to Print &amp; Save</span>
           </div>
         </div>
         <button onclick="closeIdCardModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
@@ -576,15 +671,16 @@
         </button>
       </div>
 
-      <!-- Tab Switch -->
+      <!-- Tab Switch: Front / Back -->
       <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between">
         <div class="flex space-x-1.5 text-xs font-bold">
-          <button id="pvc-tab-front" onclick="switchPvcTab('front')" class="px-3 py-1 rounded-lg bg-orange-500 text-white">Front (সামনের ভাগ)</button>
-          <button id="pvc-tab-back" onclick="switchPvcTab('back')" class="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Back (পিছন ভাগ)</button>
+          <button id="pvc-tab-front" onclick="switchPvcTab('front')" class="px-3 py-1 rounded-lg dog-logo-box shadow-sm">Front Side</button>
+          <button id="pvc-tab-back" onclick="switchPvcTab('back')" class="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Back Side</button>
         </div>
         <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Official Canine ID</span>
       </div>
 
+      <!-- Card Face Container -->
       <div class="p-4 sm:p-6 bg-gray-200 overflow-x-auto flex-1 flex justify-center items-center">
         <div id="pvc-export-container" class="w-full max-w-md">
 
@@ -592,81 +688,82 @@
           <div id="pvc-front-view" class="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
             <div class="pt-3 px-4 flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <div class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs">
-                  <i class="fa-solid fa-paw"></i>
+                <div class="w-8 h-8 rounded-xl dog-logo-box flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-dog"></i>
                 </div>
                 <div>
                   <div class="text-xs font-black uppercase text-gray-900 tracking-tight leading-none">DOG WORLD</div>
                   <div class="text-xs uppercase font-bold text-gray-500 tracking-widest leading-none mt-0.5">Canine Registry</div>
                 </div>
               </div>
-              <div class="text-amber-500 text-base">
-                <i class="fa-solid fa-sun"></i>
+              <div class="text-yellow-500 text-base">
+                <i class="fa-solid fa-shield-dog"></i>
               </div>
             </div>
 
+            <!-- Top Stripe -->
             <div class="mt-2.5 h-1.5 w-full flex">
               <div class="h-full w-1/2 bg-yellow-500"></div>
               <div class="h-full w-1/2 bg-green-600"></div>
             </div>
 
-            <div class="p-4 flex gap-4 items-start">
-              <div class="w-28 flex-shrink-0 flex flex-col items-center">
-                <div class="w-28 h-32 rounded-xl overflow-hidden border-2 border-gray-300 bg-gray-100 shadow-sm">
-                  <img id="card-front-photo" src="" alt="Dog Photo" class="w-full h-full object-cover">
+            <div class="p-4 flex gap-4 items-center">
+              <!-- Official Dog World Emblem Badge (Replaces Photo Upload) -->
+              <div class="w-24 flex-shrink-0 flex flex-col items-center">
+                <div class="w-24 h-28 rounded-2xl dog-logo-box flex flex-col items-center justify-center shadow-md border-2 border-yellow-200">
+                  <i class="fa-solid fa-dog text-4xl text-white mb-1"></i>
+                  <span class="text-xs font-black tracking-widest uppercase text-yellow-100">DOG WORLD</span>
                 </div>
                 <div class="mt-1.5 w-full py-0.5 px-1 bg-yellow-300 text-yellow-900 text-xs font-black rounded flex items-center justify-center space-x-1 border border-yellow-500">
                   <i class="fa-solid fa-circle-check text-xs"></i>
-                  <span>PVC VERIFIED</span>
+                  <span>VERIFIED</span>
                 </div>
               </div>
 
-              <div class="flex-1 space-y-1 text-xs leading-tight pt-0.5">
+              <!-- English Details (CAPITAL LETTERS FOR NAME, FATHER, MOTHER) -->
+              <div class="flex-1 space-y-1.5 text-xs leading-tight">
                 <div>
-                  <span class="text-xs text-gray-400 block font-semibold">নাম / Name:</span>
-                  <span id="card-front-name" class="font-black text-sm text-gray-900 block truncate"></span>
+                  <span class="text-xs text-gray-400 block font-bold uppercase">Dog Name:</span>
+                  <span id="card-front-name" class="font-black text-base text-gray-900 block uppercase truncate"></span>
                 </div>
                 <div class="flex">
-                  <span class="w-24 text-gray-500">জন্ম তারিখ / DOB:</span>
+                  <span class="w-20 text-gray-500 font-semibold">DOB:</span>
                   <strong id="card-front-dob" class="text-gray-800"></strong>
                 </div>
                 <div class="flex">
-                  <span class="w-24 text-gray-500">পিতার নাম / Father:</span>
-                  <strong id="card-front-father" class="text-gray-800 truncate"></strong>
+                  <span class="w-20 text-gray-500 font-semibold">Father:</span>
+                  <strong id="card-front-father" class="text-gray-900 font-black uppercase truncate"></strong>
                 </div>
                 <div class="flex">
-                  <span class="w-24 text-gray-500">মাতার নাম / Mother:</span>
-                  <strong id="card-front-mother" class="text-gray-800 truncate"></strong>
+                  <span class="w-20 text-gray-500 font-semibold">Mother:</span>
+                  <strong id="card-front-mother" class="text-gray-900 font-black uppercase truncate"></strong>
                 </div>
                 <div class="flex">
-                  <span class="w-24 text-gray-500">মালিকের নাম / Owner:</span>
+                  <span class="w-20 text-gray-500 font-semibold">Owner:</span>
                   <strong id="card-front-owner" class="text-gray-800 truncate"></strong>
                 </div>
                 <div class="flex">
-                  <span class="w-24 text-gray-500">ডগ আইডি / Dog ID:</span>
-                  <strong id="card-front-id" class="text-gray-900 font-black"></strong>
-                </div>
-                <div class="flex">
-                  <span class="w-24 text-gray-500">লিঙ্গ / Gender:</span>
-                  <strong id="card-front-gender" class="text-gray-800"></strong>
+                  <span class="w-20 text-gray-500 font-semibold">Gender:</span>
+                  <strong id="card-front-gender" class="text-gray-800 uppercase"></strong>
                 </div>
               </div>
             </div>
 
-            <div class="pt-1 pb-1.5 text-center bg-gray-50">
+            <!-- Registry Serial -->
+            <div class="pt-1 pb-1.5 text-center bg-gray-50 border-t border-gray-100">
               <div id="card-front-serial" class="text-base sm:text-lg font-black font-mono tracking-widest text-red-700"></div>
               <div id="card-front-subid" class="text-xs uppercase font-bold text-gray-400"></div>
             </div>
 
-            <div class="bg-red-700 text-white py-1.5 px-3 text-center text-xs font-bold">
-              আমার কুকুর, আমার পরিবার — সাধারণ কুকুরের অধিকার
+            <div class="bg-red-700 text-white py-1.5 px-3 text-center text-xs font-bold uppercase tracking-wider">
+              MY DOG, MY FAMILY — OFFICIAL CANINE REGISTRY
             </div>
           </div>
 
           <!-- BACK CARD FACE -->
           <div id="pvc-back-view" class="hidden bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
-            <div class="bg-gray-100 px-4 py-1 flex items-center justify-between text-xs font-bold uppercase text-gray-500 border-b border-gray-200">
-              <span>পিছন ভাগ (BACK SIDE)</span>
+            <div class="bg-gray-100 px-4 py-1.5 flex items-center justify-between text-xs font-bold uppercase text-gray-500 border-b border-gray-200">
+              <span>BACK SIDE</span>
               <span class="bg-white px-2 py-0.5 rounded border border-gray-200">ADDRESS &amp; QR</span>
             </div>
 
@@ -676,46 +773,44 @@
             </div>
 
             <div class="p-4 flex gap-3 items-start">
-              <div class="flex-1 space-y-1.5 text-xs leading-relaxed">
+              <div class="flex-1 space-y-2 text-xs leading-relaxed">
                 <div>
-                  <strong class="text-gray-900 block font-bold text-xs">ঠিকানা:</strong>
-                  <div class="text-gray-600">
-                    কেয়ার অফ: <strong id="card-back-owner-bn" class="text-gray-800"></strong><br>
-                    <span id="card-back-addr-bn" class="break-words"></span><br>
-                    জরুরী ফোন: <strong id="card-back-phone-bn" class="text-gray-900 font-bold"></strong>
+                  <strong class="text-gray-900 block font-bold uppercase text-xs">Registered Address:</strong>
+                  <div class="text-gray-600 mt-0.5">
+                    C/O: <strong id="card-back-owner-en" class="text-gray-900"></strong><br>
+                    <span id="card-back-addr-en" class="break-words"></span>
                   </div>
                 </div>
 
-                <div class="border-t border-gray-100 pt-1">
-                  <strong class="text-gray-900 block font-bold text-xs">Address:</strong>
+                <div class="border-t border-gray-100 pt-1.5">
                   <div class="text-gray-600 text-xs">
-                    C/O: <strong id="card-back-owner-en" class="text-gray-800"></strong><br>
-                    <span id="card-back-addr-en" class="break-words"></span><br>
-                    Contact: <strong id="card-back-phone-en" class="text-gray-900 font-bold"></strong>
+                    Emergency Phone: <strong id="card-back-phone-en" class="text-gray-900 font-bold"></strong><br>
+                    Latest Vaccine: <strong id="card-back-vac-en" class="text-green-700 font-bold"></strong>
                   </div>
                 </div>
               </div>
 
-              <div class="w-28 flex-shrink-0 flex flex-col items-center justify-center pt-1">
+              <!-- Scannable QR -->
+              <div class="w-28 flex-shrink-0 flex flex-col items-center justify-center">
                 <div class="p-1.5 bg-white rounded-xl border border-gray-300 flex flex-col items-center">
                   <canvas id="card-qr-canvas" width="110" height="110" class="w-24 h-24"></canvas>
                 </div>
                 <span class="text-xs text-center text-gray-500 font-bold mt-1 leading-none">
-                  স্ক্যান করে যাচাই করুন
+                  Scan to Verify
                 </span>
               </div>
             </div>
 
-            <div class="pt-1 pb-1 text-center bg-gray-50">
+            <div class="pt-1 pb-1 text-center bg-gray-50 border-t border-gray-100">
               <div id="card-back-serial" class="text-sm sm:text-base font-black font-mono tracking-widest text-red-700"></div>
               <div class="text-xs text-gray-500 font-medium flex items-center justify-center space-x-3">
                 <span id="card-back-subid"></span>
-                <span>বৈধতা: <strong>আজীবন (LIFETIME)</strong></span>
+                <span>VALIDITY: <strong>LIFETIME</strong></span>
               </div>
             </div>
 
-            <div class="bg-gray-900 text-white py-1 px-3 text-center text-xs font-medium truncate">
-              হারিয়ে গেলে যোগাযোগ করুন: <strong id="card-back-helpline" class="text-amber-300"></strong>
+            <div class="bg-gray-900 text-white py-1.5 px-3 text-center text-xs font-medium truncate">
+              If found, please contact: <strong id="card-back-helpline" class="text-yellow-300"></strong>
             </div>
           </div>
 
@@ -729,12 +824,12 @@
         </span>
 
         <div class="flex items-center space-x-2 w-full sm:w-auto">
-          <button onclick="shareIdCardWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5">
+          <button onclick="shareIdCardWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm">
             <i class="fa-brands fa-whatsapp text-sm"></i>
             <span>WhatsApp</span>
           </button>
 
-          <button id="btn-download-png" onclick="downloadIdCardImage()" class="flex-1 sm:flex-none px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-black text-xs rounded-xl shadow transition flex items-center justify-center space-x-1.5">
+          <button id="btn-download-png" onclick="downloadIdCardImage()" class="flex-1 sm:flex-none px-5 py-2.5 btn-orange-animated font-black text-xs rounded-xl flex items-center justify-center space-x-1.5">
             <i class="fa-solid fa-download"></i>
             <span>Download (PNG)</span>
           </button>
@@ -744,16 +839,19 @@
     </div>
   </div>
 
-  <!-- 8. FOOTER -->
+  <!-- ======================================================== -->
+  <!-- 8. FOOTER                                                -->
+  <!-- ======================================================== -->
   <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
     <div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400 font-medium">
       DOG WORLD &copy; 2026 &bull; Secure Digital Canine Registry &bull; Powered by Google Cloud Firebase
     </div>
   </footer>
 
-  <!-- 9. JAVASCRIPT APPLICATION LOGIC -->
+  <!-- ======================================================== -->
+  <!-- 9. JAVASCRIPT LOGIC (FIREBASE + CAPITAL LETTERS)         -->
+  <!-- ======================================================== -->
   <script>
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDSiLV__AxQrZQvtdzCDXnZ_Ic0QU0YmnM",
       authDomain: "dog-world-709b3.firebaseapp.com",
@@ -769,12 +867,9 @@
     }
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
     let currentUser = null;
     let registeredDogs = [];
-    let selectedPhotoFile = null;
-    let currentUploadedPhotoBase64 = "";
     let activeCardDog = null;
     let currentPvcTab = "front";
     let activeVaccineDog = null;
@@ -864,7 +959,7 @@
         `;
       } else {
         bar.innerHTML = `
-          <button onclick="goToAuth()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition">
+          <button onclick="goToAuth()" class="px-4 py-2 rounded-xl dog-logo-box text-xs font-bold transition">
             Login
           </button>
         `;
@@ -878,12 +973,12 @@
       const formSignup = document.getElementById("form-signup");
 
       if (tab === "login") {
-        tabLogin.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow transition";
+        tabLogin.className = "py-2.5 rounded-2xl bg-white text-orange-brand shadow transition";
         tabSignup.className = "py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition";
         formLogin.classList.remove("hidden");
         formSignup.classList.add("hidden");
       } else {
-        tabSignup.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow transition";
+        tabSignup.className = "py-2.5 rounded-2xl bg-white text-orange-brand shadow transition";
         tabLogin.className = "py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition";
         formSignup.classList.remove("hidden");
         formLogin.classList.add("hidden");
@@ -924,7 +1019,7 @@
         showToast("Invalid credentials: " + err.message, "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Log In</span>`;
+        btn.innerHTML = `<i class="fa-solid fa-paw"></i><span>Log In to Dog World</span>`;
       }
     }
 
@@ -953,7 +1048,7 @@
         showToast("Signup failed: " + err.message, "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Create Account</span>`;
+        btn.innerHTML = `<i class="fa-solid fa-paw"></i><span>Create Free Account</span>`;
       }
     }
 
@@ -1001,22 +1096,16 @@
       }
 
       editingDogId = null;
-      selectedPhotoFile = null;
-      currentUploadedPhotoBase64 = "";
 
       hideAllViews();
       document.getElementById("view-add-pet").classList.remove("hidden");
 
       document.getElementById("form-main-title").textContent = "Add a Pet to Dog World";
       document.getElementById("form-subtitle").textContent = "Canine Passport Registration";
-      document.getElementById("btn-submit-text").textContent = "Save to Cloud";
+      document.getElementById("btn-submit-text").textContent = "Save Pet Details";
       document.getElementById("section-vaccine").classList.remove("hidden");
 
       document.getElementById("form-add-dog").reset();
-      document.getElementById("photo-preview-img").classList.add("hidden");
-      document.getElementById("photo-preview-img").src = "";
-      document.getElementById("dog-photo-input").value = "";
-     
       toggleAdoptedMode(false);
 
       document.getElementById("dog-owner").value = currentUser.name || "";
@@ -1032,19 +1121,17 @@
       if (!dog) return;
 
       editingDogId = dogId;
-      selectedPhotoFile = null;
-      currentUploadedPhotoBase64 = dog.photo;
 
       hideAllViews();
       document.getElementById("view-add-pet").classList.remove("hidden");
 
-      document.getElementById("form-main-title").textContent = `Edit Details: ${dog.name}`;
+      document.getElementById("form-main-title").textContent = `Edit Details: ${(dog.name || "").toUpperCase()}`;
       document.getElementById("form-subtitle").textContent = "Update Canine Record";
-      document.getElementById("btn-submit-text").textContent = "Update in Cloud";
+      document.getElementById("btn-submit-text").textContent = "Update Pet Details";
      
-      document.getElementById("dog-name").value = dog.name;
+      document.getElementById("dog-name").value = (dog.name || "").toUpperCase();
       document.getElementById("dog-dob").value = dog.dob;
-      document.getElementById("dog-gender").value = dog.gender;
+      document.getElementById("dog-gender").value = (dog.gender || "MALE").toUpperCase();
       document.getElementById("dog-owner").value = dog.owner;
       document.getElementById("dog-mobile").value = dog.mobile;
       document.getElementById("dog-gmail").value = dog.email;
@@ -1054,12 +1141,8 @@
       document.getElementById("dog-adopted-check").checked = isAdopted;
       toggleAdoptedMode(isAdopted);
      
-      document.getElementById("dog-father").value = (!isAdopted && dog.father !== "Adopted (Unknown)") ? dog.father : "";
-      document.getElementById("dog-mother").value = (!isAdopted && dog.mother !== "Adopted (Unknown)") ? dog.mother : "";
-
-      const previewImg = document.getElementById("photo-preview-img");
-      previewImg.src = dog.photo;
-      previewImg.classList.remove("hidden");
+      document.getElementById("dog-father").value = (!isAdopted && dog.father !== "ADOPTED") ? (dog.father || "").toUpperCase() : "";
+      document.getElementById("dog-mother").value = (!isAdopted && dog.mother !== "ADOPTED") ? (dog.mother || "").toUpperCase() : "";
 
       document.getElementById("dog-vaccine-name").value = dog.vaccineName.includes("DHPPi") ? "DHPPi (7-in-1)" : (dog.vaccineName === "Rabies" ? "Rabies" : "Other");
       if (document.getElementById("dog-vaccine-name").value === "Other") {
@@ -1121,17 +1204,17 @@
       if (registeredDogs.length === 0) {
         container.className = "block";
         container.innerHTML = `
-          <div class="bg-white rounded-3xl border border-dashed border-gray-300 p-10 text-center space-y-4">
-            <div class="w-20 h-20 mx-auto rounded-3xl bg-orange-50 text-orange-500 flex items-center justify-center text-3xl shadow-inner">
+          <div class="bg-white rounded-3xl border-2 border-dashed border-orange-soft p-10 text-center space-y-4 shadow-sm">
+            <div class="w-20 h-20 mx-auto rounded-3xl dog-logo-box flex items-center justify-center text-4xl">
               <i class="fa-solid fa-dog"></i>
             </div>
             <div>
               <h3 class="text-lg font-black text-gray-800">No Dogs Registered Yet</h3>
               <p class="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
-                আপনার কুকুরের তথ্য, ছবি এবং ভ্যাকসিন রেকর্ড ক্লাউডে সেভ করতে এখনই যোগ করুন
+                Register your pet's lineage and vaccination records securely in Dog World.
               </p>
             </div>
-            <button onclick="goToAddPetView()" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-2xl shadow-md transition inline-flex items-center space-x-2">
+            <button onclick="goToAddPetView()" class="px-6 py-3 btn-orange-animated font-extrabold text-xs rounded-2xl inline-flex items-center space-x-2">
               <i class="fa-solid fa-plus"></i>
               <span>+ Add a Pet</span>
             </button>
@@ -1145,6 +1228,9 @@
       container.innerHTML = registeredDogs.map((dog, idx) => {
         const vaccineWarning = isVaccineDueWithin15Days(dog.vaccineNextDate);
         const isAdopted = dog.isAdopted;
+        const dogNameUpper = (dog.name || "").toUpperCase();
+        const fatherUpper = (dog.father || "ADOPTED").toUpperCase();
+        const motherUpper = (dog.mother || "ADOPTED").toUpperCase();
 
         let warningBadge = "";
         let borderAlert = "border-gray-200";
@@ -1152,7 +1238,7 @@
         if (vaccineWarning.isDue) {
           borderAlert = "border-red-400";
           const alertText = vaccineWarning.isOverdue
-            ? `⚠️ VACCINE OVERDUE (${Math.abs(vaccineWarning.daysRemaining)} days ago)`
+            ? `⚠️ VACCINE OVERDUE (${Math.abs(vaccineWarning.daysRemaining)} DAYS AGO)`
             : `⚠️ VACCINE DUE IN ${vaccineWarning.daysRemaining} DAY(S)!`;
 
           warningBadge = `
@@ -1167,56 +1253,61 @@
           <div class="bg-white rounded-3xl border ${borderAlert} shadow-lg overflow-hidden flex flex-col justify-between transition">
             ${warningBadge}
 
-            <div class="relative h-48 bg-gray-800 overflow-hidden">
-              <img src="${dog.photo}" alt="${dog.name}" class="w-full h-full object-cover">
-             
-              <div class="absolute top-3 left-3 flex items-center space-x-1.5">
-                <span class="px-2.5 py-1 rounded-full text-xs font-black ${dog.gender === 'Male' ? 'bg-blue-500 text-white' : 'bg-pink-500 text-white'} shadow-sm">
-                  ${dog.gender}
-                </span>
-                ${isAdopted ? `
-                  <span class="px-2.5 py-1 rounded-full text-xs font-black bg-amber-500 text-white shadow-sm flex items-center space-x-1">
-                    <i class="fa-solid fa-heart"></i>
-                    <span>Adopted</span>
-                  </span>
-                ` : ''}
+            <!-- Card Header with Original Dog Logo -->
+            <div class="p-4 brand-gradient text-white flex items-center justify-between relative">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-white bg-opacity-20 border border-white border-opacity-30 flex items-center justify-center text-2xl shadow-sm">
+                  <i class="fa-solid fa-dog"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-black uppercase tracking-tight leading-tight">${dogNameUpper}</h3>
+                  <div class="flex items-center space-x-1.5 mt-1">
+                    <span class="px-2 py-0.5 rounded-full text-xs font-black bg-white bg-opacity-20 uppercase">
+                      ${dog.gender}
+                    </span>
+                    ${isAdopted ? `
+                      <span class="px-2 py-0.5 rounded-full text-xs font-black bg-yellow-400 text-yellow-900 uppercase">
+                        Adopted
+                      </span>
+                    ` : ''}
+                  </div>
+                </div>
               </div>
 
-              <div class="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">
+              <span class="bg-black bg-opacity-30 text-white text-xs font-bold px-2.5 py-1 rounded-full">
                 #${idx + 1}
-              </div>
+              </span>
             </div>
 
             <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
               <div>
-                <div class="flex items-start justify-between">
-                  <h3 class="text-xl font-black text-gray-900 truncate">${dog.name}</h3>
-                  <button onclick="openEditPetView('${dog.id}')" class="text-gray-400 hover:text-orange-600 text-xs font-bold flex items-center space-x-1 transition">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span class="flex items-center space-x-1.5">
+                    <i class="fa-solid fa-cake-candles text-orange-brand"></i>
+                    <span>DOB: <strong>${dog.dob}</strong></span>
+                  </span>
+                  <button onclick="openEditPetView('${dog.id}')" class="text-gray-400 hover:text-gray-800 font-bold flex items-center space-x-1 transition">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Edit</span>
                   </button>
                 </div>
 
-                <div class="text-xs text-gray-500 flex items-center space-x-1.5 mt-0.5">
-                  <i class="fa-solid fa-cake-candles text-amber-500"></i>
-                  <span>DOB: <strong>${dog.dob}</strong></span>
-                </div>
-
+                <!-- Parents in CAPITAL LETTERS -->
                 <div class="mt-3 grid grid-cols-2 gap-2 text-xs bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                   <div>
                     <span class="text-gray-400 block text-xs uppercase font-bold">Father</span>
-                    <strong class="text-gray-700 truncate block">${dog.father || "Adopted / Unknown"}</strong>
+                    <strong class="text-gray-900 font-black uppercase truncate block">${fatherUpper}</strong>
                   </div>
                   <div>
                     <span class="text-gray-400 block text-xs uppercase font-bold">Mother</span>
-                    <strong class="text-gray-700 truncate block">${dog.mother || "Adopted / Unknown"}</strong>
+                    <strong class="text-gray-900 font-black uppercase truncate block">${motherUpper}</strong>
                   </div>
                 </div>
 
                 <div class="mt-3 bg-green-50 border border-green-200 rounded-xl p-2.5 text-xs">
                   <div class="flex items-center justify-between font-bold text-green-900 mb-1">
                     <span class="truncate">${dog.vaccineName}</span>
-                    <span class="text-xs bg-green-200 text-green-950 px-1.5 py-0.5 rounded-full">Latest</span>
+                    <span class="text-xs bg-green-200 text-green-900 px-1.5 py-0.5 rounded-full">Latest</span>
                   </div>
                   <div class="flex justify-between text-xs text-green-800">
                     <span>Date: <strong>${dog.vaccineDate}</strong></span>
@@ -1226,7 +1317,7 @@
               </div>
 
               <div class="pt-3 border-t border-gray-100 space-y-2">
-                <button onclick="openIdCardModal('${dog.id}')" class="w-full py-2.5 px-4 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-1.5">
+                <button onclick="openIdCardModal('${dog.id}')" class="w-full py-2.5 px-4 btn-orange-animated font-extrabold text-xs rounded-xl flex items-center justify-center space-x-1.5">
                   <i class="fa-solid fa-id-card"></i>
                   <span>Share / PVC Card</span>
                   <i class="fa-solid fa-download text-xs ml-1"></i>
@@ -1234,14 +1325,14 @@
 
                 <div class="flex items-center space-x-2">
                   <button onclick="openDetailsModal('${dog.id}')" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
-                    <i class="fa-solid fa-passport text-orange-500"></i>
+                    <i class="fa-solid fa-passport text-orange-brand"></i>
                     <span>Passport</span>
                   </button>
                   <button onclick="openVaccineModal('${dog.id}')" class="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-800 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
                     <i class="fa-solid fa-syringe text-green-600"></i>
                     <span>Vaccines</span>
                   </button>
-                  <button onclick="deleteDog('${dog.id}', '${dog.name}')" class="p-2 text-gray-400 hover:text-red-600 rounded-xl transition">
+                  <button onclick="deleteDog('${dog.id}', '${dogNameUpper}')" class="p-2 text-gray-400 hover:text-red-600 rounded-xl transition">
                     <i class="fa-solid fa-trash-can text-xs"></i>
                   </button>
                 </div>
@@ -1254,15 +1345,15 @@
 
       if (registeredDogs.length < 10) {
         addAnotherWrap.innerHTML = `
-          <button onclick="goToAddPetView()" class="px-8 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl transition flex items-center space-x-2">
+          <button onclick="goToAddPetView()" class="px-8 py-3.5 btn-orange-animated font-black text-xs sm:text-sm rounded-2xl flex items-center space-x-2">
             <i class="fa-solid fa-plus-circle text-base"></i>
-            <span>+ Add Another Dog Details (${registeredDogs.length}/10)</span>
+            <span>+ Add Another Dog (${registeredDogs.length}/10)</span>
           </button>
         `;
       } else {
         addAnotherWrap.innerHTML = `
-          <div class="px-6 py-2.5 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 font-bold text-xs flex items-center space-x-2">
-            <i class="fa-solid fa-circle-check text-amber-600"></i>
+          <div class="px-6 py-2.5 rounded-2xl bg-yellow-50 border border-yellow-300 text-yellow-900 font-bold text-xs flex items-center space-x-2">
+            <i class="fa-solid fa-circle-check text-yellow-600"></i>
             <span>Maximum kennel capacity reached (10 / 10 Dogs Registered).</span>
           </div>
         `;
@@ -1274,44 +1365,21 @@
       const motherInput = document.getElementById("dog-mother");
       const astFather = document.getElementById("ast-father");
       const astMother = document.getElementById("ast-mother");
-      const lblFather = document.getElementById("lbl-father");
-      const lblMother = document.getElementById("lbl-mother");
 
       if (isAdopted) {
         fatherInput.required = false;
         motherInput.required = false;
         astFather.classList.add("hidden");
         astMother.classList.add("hidden");
-        fatherInput.placeholder = "Optional (Adopted - leave blank)";
-        motherInput.placeholder = "Optional (Adopted - leave blank)";
-        fatherInput.classList.add("bg-amber-50");
-        motherInput.classList.add("bg-amber-50");
-        lblFather.classList.add("text-amber-800");
-        lblMother.classList.add("text-amber-800");
+        fatherInput.placeholder = "OPTIONAL (ADOPTED)";
+        motherInput.placeholder = "OPTIONAL (ADOPTED)";
       } else {
         fatherInput.required = true;
         motherInput.required = true;
         astFather.classList.remove("hidden");
         astMother.classList.remove("hidden");
-        fatherInput.placeholder = "Enter father's name";
-        motherInput.placeholder = "Enter mother's name";
-        fatherInput.classList.remove("bg-amber-50");
-        motherInput.classList.remove("bg-amber-50");
-        lblFather.classList.remove("text-amber-800");
-        lblMother.classList.remove("text-amber-800");
-      }
-    }
-
-    function handlePhotoUpload(input) {
-      if (input.files && input.files[0]) {
-        selectedPhotoFile = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const previewImg = document.getElementById("photo-preview-img");
-          previewImg.src = e.target.result;
-          previewImg.classList.remove("hidden");
-        };
-        reader.readAsDataURL(selectedPhotoFile);
+        fatherInput.placeholder = "ENTER FATHER'S NAME";
+        motherInput.placeholder = "ENTER MOTHER'S NAME";
       }
     }
 
@@ -1346,11 +1414,6 @@
         return;
       }
 
-      if (!editingDogId && !selectedPhotoFile) {
-        showToast("Please upload a dog photo.", "error");
-        return;
-      }
-
       if (!editingDogId && registeredDogs.length >= 10) {
         showToast("Maximum kennel capacity reached (10 dogs).", "error");
         return;
@@ -1359,21 +1422,13 @@
       const btn = document.getElementById("btn-submit-dog");
       const oldHtml = btn.innerHTML;
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Uploading to Cloud...</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>`;
 
       try {
-        let photoURL = currentUploadedPhotoBase64;
-
-        if (selectedPhotoFile) {
-          const fileExt = selectedPhotoFile.name.split('.').pop();
-          const storagePath = `dog_photos/${currentUser.uid}/${Date.now()}.${fileExt}`;
-          const snapshot = await storage.ref(storagePath).put(selectedPhotoFile);
-          photoURL = await snapshot.ref.getDownloadURL();
-        }
-
         const isAdopted = document.getElementById("dog-adopted-check").checked;
-        const fatherVal = document.getElementById("dog-father").value.trim();
-        const motherVal = document.getElementById("dog-mother").value.trim();
+        const nameVal = document.getElementById("dog-name").value.trim().toUpperCase();
+        const fatherVal = document.getElementById("dog-father").value.trim().toUpperCase();
+        const motherVal = document.getElementById("dog-mother").value.trim().toUpperCase();
 
         const vacType = document.getElementById("dog-vaccine-name").value;
         const vaccineName = vacType === "Other"
@@ -1386,13 +1441,12 @@
 
         const dogRecord = {
           userId: currentUser.uid,
-          photo: photoURL,
-          name: document.getElementById("dog-name").value.trim(),
+          name: nameVal,
           dob: document.getElementById("dog-dob").value,
-          gender: document.getElementById("dog-gender").value,
+          gender: document.getElementById("dog-gender").value.toUpperCase(),
           isAdopted: isAdopted,
-          father: fatherVal || (isAdopted ? "Adopted (Unknown)" : ""),
-          mother: motherVal || (isAdopted ? "Adopted (Unknown)" : ""),
+          father: fatherVal || (isAdopted ? "ADOPTED" : ""),
+          mother: motherVal || (isAdopted ? "ADOPTED" : ""),
           owner: document.getElementById("dog-owner").value.trim(),
           mobile: sanitizedPhone,
           email: document.getElementById("dog-gmail").value.trim(),
@@ -1405,7 +1459,7 @@
 
         if (editingDogId) {
           await db.collection("dogs").doc(editingDogId).update(dogRecord);
-          showToast("✅ Pet details updated in Cloud!", "success");
+          showToast(`✅ ${nameVal}'s details updated!`, "success");
           editingDogId = null;
         } else {
           dogRecord.createdAt = firebase.firestore.FieldValue.serverTimestamp();
@@ -1418,7 +1472,7 @@
             }
           ];
           await db.collection("dogs").add(dogRecord);
-          showToast("🎉 Pet successfully registered in Cloud!", "success");
+          showToast(`🎉 ${nameVal} registered in Dog World!`, "success");
         }
 
         await loadDogsFromFirebase();
@@ -1439,7 +1493,7 @@
       try {
         await db.collection("dogs").doc(dogId).delete();
         await loadDogsFromFirebase();
-        showToast(`${dogName} removed from cloud records.`);
+        showToast(`${dogName} removed from records.`);
       } catch (err) {
         showToast("Error deleting: " + err.message, "error");
       }
@@ -1449,13 +1503,12 @@
       const dog = registeredDogs.find(d => d.id === dogId);
       if (!dog) return;
 
-      document.getElementById("detail-img").src = dog.photo;
-      document.getElementById("detail-name").textContent = dog.name;
-      document.getElementById("detail-gender-badge").textContent = dog.gender;
+      document.getElementById("detail-name").textContent = (dog.name || "").toUpperCase();
+      document.getElementById("detail-gender-badge").textContent = (dog.gender || "").toUpperCase();
       document.getElementById("detail-dob").textContent = dog.dob;
       document.getElementById("detail-id").textContent = dog.id.slice(-6).toUpperCase();
-      document.getElementById("detail-father").textContent = dog.father || "Adopted / Unknown";
-      document.getElementById("detail-mother").textContent = dog.mother || "Adopted / Unknown";
+      document.getElementById("detail-father").textContent = (dog.father || "ADOPTED").toUpperCase();
+      document.getElementById("detail-mother").textContent = (dog.mother || "ADOPTED").toUpperCase();
       document.getElementById("detail-owner").textContent = dog.owner;
       document.getElementById("detail-mobile").textContent = "+91 " + dog.mobile;
       document.getElementById("detail-gmail").textContent = dog.email;
@@ -1477,7 +1530,7 @@
       if (!dog) return;
 
       activeVaccineDog = dog;
-      document.getElementById("vac-modal-title").textContent = `${dog.name}'s Vaccination History`;
+      document.getElementById("vac-modal-title").textContent = `${(dog.name || "").toUpperCase()}'s Vaccine History`;
 
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("dose-vac-date").value = today;
@@ -1558,7 +1611,7 @@
 
         await loadDogsFromFirebase();
         renderVaccineHistoryList();
-        showToast(`New dose logged for ${activeVaccineDog.name}!`, "success");
+        showToast(`New dose logged for ${(activeVaccineDog.name || "").toUpperCase()}!`, "success");
       } catch (err) {
         showToast("Error updating dose: " + err.message, "error");
       } finally {
@@ -1578,7 +1631,7 @@
     }
 
     function drawCardQrCode(dog) {
-      const qrPayload = `🐾 DOG WORLD REGISTRY\nName: ${dog.name}\nDOB: ${dog.dob}\nOwner: ${dog.owner}\nMobile: +91 ${dog.mobile}\nVaccine: ${dog.vaccineName}\nCloud Verified`;
+      const qrPayload = `DOG WORLD REGISTRY\nNAME: ${(dog.name || "").toUpperCase()}\nDOB: ${dog.dob}\nFATHER: ${(dog.father || "ADOPTED").toUpperCase()}\nMOTHER: ${(dog.mother || "ADOPTED").toUpperCase()}\nOWNER: ${dog.owner}\nMOBILE: +91 ${dog.mobile}`;
       try {
         const qrCanvas = document.getElementById("card-qr-canvas");
         new QRious({
@@ -1600,23 +1653,19 @@
       activeCardDog = dog;
       const serialData = generateSerial(dog, dogIdx + 1);
 
-      document.getElementById("card-front-photo").src = dog.photo;
-      document.getElementById("card-front-name").textContent = `${dog.name.toUpperCase()} (${dog.name})`;
+      document.getElementById("card-front-name").textContent = (dog.name || "").toUpperCase();
       document.getElementById("card-front-dob").textContent = dog.dob;
-      document.getElementById("card-front-father").textContent = dog.father || "Adopted / Unknown";
-      document.getElementById("card-front-mother").textContent = dog.mother || "Adopted / Unknown";
+      document.getElementById("card-front-father").textContent = (dog.father || "ADOPTED").toUpperCase();
+      document.getElementById("card-front-mother").textContent = (dog.mother || "ADOPTED").toUpperCase();
       document.getElementById("card-front-owner").textContent = dog.owner;
-      document.getElementById("card-front-id").textContent = serialData.shortId;
-      document.getElementById("card-front-gender").textContent = dog.gender === "Male" ? "MALE (পুরুষ)" : "FEMALE (স্ত্রী)";
+      document.getElementById("card-front-gender").textContent = (dog.gender || "MALE").toUpperCase();
       document.getElementById("card-front-serial").innerHTML = serialData.formatted;
       document.getElementById("card-front-subid").textContent = `CANINE ID: ${serialData.shortId}`;
 
-      document.getElementById("card-back-owner-bn").textContent = dog.owner;
       document.getElementById("card-back-owner-en").textContent = dog.owner;
-      document.getElementById("card-back-addr-bn").textContent = dog.address;
       document.getElementById("card-back-addr-en").textContent = dog.address;
-      document.getElementById("card-back-phone-bn").textContent = "+91 " + dog.mobile;
       document.getElementById("card-back-phone-en").textContent = "+91 " + dog.mobile;
+      document.getElementById("card-back-vac-en").textContent = `${dog.vaccineName} (${dog.vaccineDate})`;
       document.getElementById("card-back-serial").innerHTML = serialData.formatted;
       document.getElementById("card-back-subid").textContent = `CANINE ID: ${serialData.shortId}`;
       document.getElementById("card-back-helpline").textContent = `+91 ${dog.mobile} | ${dog.email}`;
@@ -1640,12 +1689,12 @@
       if (tab === "front") {
         front.classList.remove("hidden");
         back.classList.add("hidden");
-        tabFront.className = "px-3 py-1 rounded-lg bg-orange-500 text-white";
+        tabFront.className = "px-3 py-1 rounded-lg dog-logo-box shadow-sm";
         tabBack.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
       } else {
         front.classList.add("hidden");
         back.classList.remove("hidden");
-        tabBack.className = "px-3 py-1 rounded-lg bg-orange-500 text-white";
+        tabBack.className = "px-3 py-1 rounded-lg dog-logo-box shadow-sm";
         tabFront.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
         if (activeCardDog) {
           drawCardQrCode(activeCardDog);
@@ -1676,13 +1725,13 @@
 
         const dataUrl = canvas.toDataURL("image/png");
         const link = document.createElement("a");
-        link.download = `${activeCardDog.name}-Canine-Card-${currentPvcTab.toUpperCase()}.png`;
+        link.download = `${(activeCardDog.name || "DOG").toUpperCase()}-Canine-Card-${currentPvcTab.toUpperCase()}.png`;
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        showToast(`🎉 ${activeCardDog.name}'s card downloaded!`, "success");
+        showToast(`🎉 ${(activeCardDog.name || "").toUpperCase()}'s card downloaded!`, "success");
       } catch (err) {
         showToast("Error generating card image. Please try again.", "error");
       } finally {
@@ -1695,8 +1744,10 @@
       if (!activeCardDog) return;
 
       const msg = `🐾 *DOG WORLD Canine Identity Card*\n\n` +
-        `🐶 *Name:* ${activeCardDog.name}\n` +
+        `🐶 *Name:* ${(activeCardDog.name || "").toUpperCase()}\n` +
         `📅 *DOB:* ${activeCardDog.dob}\n` +
+        `🧬 *Father:* ${(activeCardDog.father || "ADOPTED").toUpperCase()}\n` +
+        `🧬 *Mother:* ${(activeCardDog.mother || "ADOPTED").toUpperCase()}\n` +
         `👤 *Owner:* ${activeCardDog.owner}\n` +
         `📞 *Contact:* +91 ${activeCardDog.mobile}\n` +
         `💉 *Last Vaccine:* ${activeCardDog.vaccineName} (${activeCardDog.vaccineDate})\n` +
@@ -1719,7 +1770,6 @@
     window.handleSignupSubmit = handleSignupSubmit;
     window.handleLogout = handleLogout;
     window.toggleAdoptedMode = toggleAdoptedMode;
-    window.handlePhotoUpload = handlePhotoUpload;
     window.handleVaccineChange = handleVaccineChange;
     window.autoCalculateNextVaccineDate = autoCalculateNextVaccineDate;
     window.handleSaveDogSubmit = handleSaveDogSubmit;
