@@ -13,6 +13,9 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  
+  <!-- Standalone Pre-compiled Tailwind CSS (Direct file:/// ebong mobile/PC sobjaygay kaj korbe) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
   <!-- QRious Engine (QR Generator) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
@@ -25,39 +28,31 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
-  <!-- Tailwind CSS -->
-  <script src="[https://cdn.tailwindcss.com"></script]https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'sans-serif'],
-            bengali: ['"Hind Siliguri"', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#fff7ed',
-              100: '#ffedd5',
-              500: '#f97316',
-              600: '#ea580c',
-              700: '#c2410c'
-            }
-          }
-        }
-      }
-    }
-  </script>
-
   <style>
+    /* Direct Offline & Fallback Styles */
     body {
       font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
       -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f5f9;
+      color: #1e293b;
+    }
+    .hidden {
+      display: none !important;
     }
     .modal-backdrop {
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(6px);
     }
+    .bg-brand-500 { background-color: #f97316; }
+    .bg-brand-600 { background-color: #ea580c; }
+    .border-brand-500 { border-color: #f97316; }
+    .text-brand-600 { color: #ea580c; }
+   
+    .rounded-3xl { border-radius: 1.5rem; }
+    .rounded-2xl { border-radius: 1rem; }
+   
     @keyframes pulse-fast {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.85; transform: scale(1.02); }
@@ -67,29 +62,29 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen antialiased flex flex-col selection:bg-orange-500 selection:text-white">
+<body class="min-h-screen antialiased flex flex-col selection:bg-orange-500 selection:text-white">
 
   <!-- 1. SPLASH SCREEN -->
-  <div id="splash-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
+  <div id="splash-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-orange-500 to-amber-600 flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
     <div class="relative flex flex-col items-center text-center">
-      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white/20 backdrop-blur-md rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-bounce">
+      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white bg-opacity-20 rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-bounce">
         <i class="fa-solid fa-paw"></i>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl font-black tracking-tight drop-shadow-md">
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight">
         DOG <span class="text-amber-200">WORLD</span>
       </h1>
-      <p class="mt-2 text-sm sm:text-base font-semibold tracking-wide text-orange-100 font-bengali">
+      <p class="mt-2 text-sm sm:text-base font-semibold tracking-wide text-orange-100">
         আমার কুকুর, আমার পরিবার — ডিজিটাল ক্যানাইন রেজিস্ট্রি
       </p>
 
       <div class="mt-8 flex items-center space-x-2">
         <div class="w-3 h-3 bg-white rounded-full animate-ping"></div>
-        <div class="w-3 h-3 bg-amber-200 rounded-full animate-ping delay-150"></div>
-        <div class="w-3 h-3 bg-white rounded-full animate-ping delay-300"></div>
+        <div class="w-3 h-3 bg-amber-200 rounded-full animate-ping"></div>
+        <div class="w-3 h-3 bg-white rounded-full animate-ping"></div>
       </div>
 
-      <button onclick="dismissSplash()" class="mt-10 px-5 py-2 rounded-full bg-white/20 hover:bg-white/30 text-xs font-bold uppercase tracking-wider backdrop-blur-md border border-white/30 transition active:scale-95">
+      <button onclick="dismissSplash()" class="mt-10 px-5 py-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 text-xs font-bold uppercase tracking-wider border border-white border-opacity-30 transition">
         Skip &nbsp;<i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
@@ -102,15 +97,15 @@
   </div>
 
   <!-- 3. TOP NAVBAR -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="goToHome()">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-400 text-white flex items-center justify-center text-lg shadow-md shadow-orange-500/20">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-400 text-white flex items-center justify-center text-lg shadow-md">
           <i class="fa-solid fa-dog"></i>
         </div>
         <div>
-          <span class="text-xl font-black tracking-tight text-slate-900 block leading-none">DOG <span class="text-orange-500">WORLD</span></span>
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kennel Registry</span>
+          <span class="text-xl font-black tracking-tight text-gray-900 block leading-none">DOG <span class="text-orange-500">WORLD</span></span>
+          <span class="text-xs text-gray-400 font-bold uppercase tracking-wider">Kennel Registry</span>
         </div>
       </div>
 
@@ -123,85 +118,80 @@
 
     <!-- VIEW A: AUTHENTICATION -->
     <div id="view-auth" class="hidden max-w-md mx-auto my-8">
-      <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+      <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
        
-        <div class="grid grid-cols-2 p-1.5 bg-slate-100 border-b border-slate-200 text-xs font-bold">
-          <button id="tab-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-2xl bg-white text-orange-600 shadow-xs transition">
+        <div class="grid grid-cols-2 p-1.5 bg-gray-100 border-b border-gray-200 text-xs font-bold">
+          <button id="tab-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-2xl bg-white text-orange-600 shadow transition">
             Login
           </button>
-          <button id="tab-signup" onclick="switchAuthTab('signup')" class="py-2.5 rounded-2xl text-slate-600 hover:text-slate-900 transition">
+          <button id="tab-signup" onclick="switchAuthTab('signup')" class="py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition">
             Create Account
           </button>
         </div>
 
-        <!-- Login Form -->
         <div class="p-6 sm:p-8 space-y-4">
-         
-          <!-- Google Login Quick Action -->
-          <button type="button" onclick="handleGoogleSignIn()" class="w-full py-2.5 px-4 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl shadow-2xs transition flex items-center justify-center gap-2.5 active:scale-95">
-            <i class="fa-brands fa-google text-rose-500 text-base"></i>
+          <button type="button" onclick="handleGoogleSignIn()" class="w-full py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-2">
+            <i class="fa-brands fa-google text-red-500 text-base"></i>
             <span>Continue with Google</span>
           </button>
 
           <div class="flex items-center my-3">
-            <div class="flex-1 border-t border-slate-200"></div>
-            <span class="px-3 text-[11px] font-bold text-slate-400 uppercase">OR EMAIL</span>
-            <div class="flex-1 border-t border-slate-200"></div>
+            <div class="flex-1 border-t border-gray-200"></div>
+            <span class="px-3 text-xs font-bold text-gray-400 uppercase">OR EMAIL</span>
+            <div class="flex-1 border-t border-gray-200"></div>
           </div>
 
           <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email</label>
               <div class="relative">
-                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                <input type="email" id="login-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                <input type="email" id="login-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
               <div class="relative">
-                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                <input type="password" id="login-password" required placeholder="Enter password" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                <input type="password" id="login-password" required placeholder="Enter password" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
               </div>
             </div>
 
-            <button type="submit" id="btn-login-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-orange-500/25 transition active:scale-95 flex items-center justify-center space-x-2">
+            <button type="submit" id="btn-login-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
               <span>Log In</span>
             </button>
           </form>
 
-          <!-- Sign Up Form -->
           <form id="form-signup" onsubmit="handleSignupSubmit(event)" class="hidden space-y-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Full Owner Name</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Full Owner Name</label>
               <div class="relative">
-                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                <input type="text" id="signup-name" required placeholder="Enter full name" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                <input type="text" id="signup-name" required placeholder="Enter full name" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email</label>
               <div class="relative">
-                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                <input type="email" id="signup-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                <input type="email" id="signup-email" required placeholder="Enter your email" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
               <div class="relative">
-                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                <input type="password" id="signup-password" required minlength="6" placeholder="Create password (min 6 characters)" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                <input type="password" id="signup-password" required minlength="6" placeholder="Create password (min 6 characters)" class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
               </div>
             </div>
 
-            <button type="submit" id="btn-signup-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-orange-500/25 transition active:scale-95 flex items-center justify-center space-x-2">
+            <button type="submit" id="btn-signup-submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
               <span>Create Account</span>
             </button>
           </form>
-
         </div>
 
       </div>
@@ -210,7 +200,7 @@
     <!-- VIEW B: DASHBOARD -->
     <div id="view-dashboard" class="hidden space-y-6">
      
-      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+      <div class="bg-gray-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
         <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div class="flex items-center space-x-2 text-xs font-bold text-amber-400 tracking-wider uppercase mb-1">
@@ -218,14 +208,14 @@
               <span id="dash-owner-greeting">Welcome, Dog Owner</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black">Your Registered Kennel</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 font-medium font-bengali">
-              আপনি সর্বোচ্চ ১০টি কুকুর রেজিস্ট্রেশন করতে পারবেন (Firebase Cloud-এ সুরক্ষিত)
+            <p class="text-xs sm:text-sm text-gray-300 mt-1 font-medium">
+              আপনি সর্বোচ্চ ১০টি কুকুর রেজিস্ট্রেশন করতে পারবেন (Firebase Cloud-এ সংরক্ষিত)
             </p>
           </div>
 
-          <div class="flex items-center space-x-4 bg-white/10 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/10">
+          <div class="flex items-center space-x-4 bg-white bg-opacity-10 px-5 py-3 rounded-2xl border border-white border-opacity-10">
             <div class="text-right">
-              <div class="text-[10px] uppercase font-bold tracking-wider text-slate-300">Kennel Capacity</div>
+              <div class="text-xs uppercase font-bold tracking-wider text-gray-300">Kennel Capacity</div>
               <div id="dash-count-pill" class="text-xl sm:text-2xl font-black text-amber-300">0 / 10</div>
             </div>
             <div class="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center text-xl text-white shadow-md">
@@ -234,10 +224,10 @@
           </div>
         </div>
 
-        <i class="fa-solid fa-dog absolute -right-8 -bottom-8 text-white/5 text-9xl pointer-events-none"></i>
+        <i class="fa-solid fa-dog absolute -right-8 -bottom-8 text-white text-opacity-5 text-9xl pointer-events-none"></i>
       </div>
 
-      <!-- Dogs Grid Container -->
+      <!-- Dogs Grid -->
       <div id="dogs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
       <!-- Bottom Add Trigger -->
@@ -247,17 +237,17 @@
 
     <!-- VIEW C: ADD / EDIT PET FORM -->
     <div id="view-add-pet" class="hidden max-w-2xl mx-auto">
-      <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+      <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
        
-        <div class="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 p-6 text-white flex items-center justify-between">
+        <div class="bg-gradient-to-r from-orange-500 to-amber-600 p-6 text-white flex items-center justify-between">
           <div>
-            <div class="text-xs uppercase font-extrabold tracking-widest text-amber-100 flex items-center gap-1.5">
+            <div class="text-xs uppercase font-extrabold tracking-widest text-amber-100 flex items-center space-x-1.5">
               <i class="fa-solid fa-shield-paw"></i>
               <span id="form-subtitle">Canine Passport Registration</span>
             </div>
             <h2 id="form-main-title" class="text-xl sm:text-2xl font-black mt-1">Add a Pet to Dog World</h2>
           </div>
-          <button onclick="goToHome()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition">
+          <button onclick="goToHome()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
@@ -266,21 +256,21 @@
          
           <!-- PHOTO UPLOAD -->
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-              Dog Photo (ছবি আপলোড করুন) <span class="text-rose-500">*</span>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              Dog Photo (ছবি আপলোড করুন) <span class="text-red-500">*</span>
             </label>
             <div class="flex flex-col sm:flex-row items-center gap-4">
-              <div id="photo-preview-box" class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 overflow-hidden relative shadow-inner">
+              <div id="photo-preview-box" class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 overflow-hidden relative shadow-inner">
                 <i class="fa-solid fa-camera text-2xl"></i>
-                <span class="text-[10px] font-bold mt-1">No Image</span>
+                <span class="text-xs font-bold mt-1">No Image</span>
                 <img id="photo-preview-img" src="" alt="Dog Preview" class="hidden absolute inset-0 w-full h-full object-cover">
               </div>
 
               <div class="flex-1 w-full space-y-2">
-                <input type="file" id="dog-photo-input" accept="image/*" onchange="handlePhotoUpload(this)" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 cursor-pointer">
-                <p class="text-[11px] text-slate-400">
+                <input type="file" id="dog-photo-input" accept="image/*" onchange="handlePhotoUpload(this)" class="block w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100 cursor-pointer">
+                <p class="text-xs text-gray-400">
                   <i class="fa-solid fa-cloud-arrow-up text-orange-400 mr-1"></i>
-                  ছবিটি ক্লাউড স্টোরেজে অটোমেটিক কম্প্রেস ও সেভ হবে।
+                  ছবিটি Firebase Cloud Storage-এ অটোমেটিক আপলোড হবে।
                 </p>
               </div>
             </div>
@@ -289,61 +279,61 @@
           <!-- BASIC DETAILS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Dog Name <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Dog Name <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="dog-name" required placeholder="Enter dog name" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="text" id="dog-name" required placeholder="Enter dog name" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Date of Birth (DOB) <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Date of Birth (DOB) <span class="text-red-500">*</span>
               </label>
-              <input type="date" id="dog-dob" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="date" id="dog-dob" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Gender <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Gender <span class="text-red-500">*</span>
               </label>
-              <select id="dog-gender" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <select id="dog-gender" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
                 <option value="Male">Male (পুরুষ)</option>
                 <option value="Female">Female (স্ত্রী)</option>
               </select>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Owner Name <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Owner Name <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="dog-owner" required placeholder="Enter owner full name" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="text" id="dog-owner" required placeholder="Enter owner full name" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
           </div>
 
           <!-- PARENTS LINEAGE -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+          <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Parents Lineage (বংশ পরিচয়)</span>
+              <span class="text-xs font-bold text-gray-800 uppercase tracking-wider">Parents Lineage (বংশ পরিচয়)</span>
              
-              <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs hover:border-amber-400 transition">
-                <input type="checkbox" id="dog-adopted-check" onchange="toggleAdoptedMode(this.checked)" class="w-4 h-4 text-orange-500 rounded border-slate-300 focus:ring-orange-400">
-                <span class="text-xs font-bold text-amber-700 font-bengali">Adopted (বাবা-মা জানা নেই)</span>
+              <label class="flex items-center space-x-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-gray-200 hover:border-amber-400 transition">
+                <input type="checkbox" id="dog-adopted-check" onchange="toggleAdoptedMode(this.checked)" class="w-4 h-4 text-orange-500 rounded border-gray-300">
+                <span class="text-xs font-bold text-amber-700">Adopted (বাবা-মা জানা নেই)</span>
               </label>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
-                <label id="lbl-father" class="block text-[11px] font-bold text-slate-600 mb-1">
-                  Father Name (পিতার নাম) <span id="ast-father" class="text-rose-500">*</span>
+                <label id="lbl-father" class="block text-xs font-bold text-gray-600 mb-1">
+                  Father Name (পিতার নাম) <span id="ast-father" class="text-red-500">*</span>
                 </label>
-                <input type="text" id="dog-father" required placeholder="Enter father's name" class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                <input type="text" id="dog-father" required placeholder="Enter father's name" class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
               </div>
 
               <div>
-                <label id="lbl-mother" class="block text-[11px] font-bold text-slate-600 mb-1">
-                  Mother Name (মাতার নাম) <span id="ast-mother" class="text-rose-500">*</span>
+                <label id="lbl-mother" class="block text-xs font-bold text-gray-600 mb-1">
+                  Mother Name (মাতার নাম) <span id="ast-mother" class="text-red-500">*</span>
                 </label>
-                <input type="text" id="dog-mother" required placeholder="Enter mother's name" class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                <input type="text" id="dog-mother" required placeholder="Enter mother's name" class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
               </div>
             </div>
           </div>
@@ -351,72 +341,72 @@
           <!-- CONTACT & ADDRESS -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Mobile Number <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Mobile Number <span class="text-red-500">*</span>
               </label>
-              <input type="tel" id="dog-mobile" required placeholder="Enter 10-digit mobile number" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="tel" id="dog-mobile" required placeholder="Enter 10-digit mobile number" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Gmail ID <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Gmail ID <span class="text-red-500">*</span>
               </label>
-              <input type="email" id="dog-gmail" required placeholder="Enter Gmail address" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+              <input type="email" id="dog-gmail" required placeholder="Enter Gmail address" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
             </div>
 
             <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Full Address (ঠিকানা) <span class="text-rose-500">*</span>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Full Address (ঠিকানা) <span class="text-red-500">*</span>
               </label>
-              <textarea id="dog-address" rows="2" required placeholder="Vill/Para, PO, PS, Dist, Pin Code..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition"></textarea>
+              <textarea id="dog-address" rows="2" required placeholder="Vill/Para, PO, PS, Dist, Pin Code..." class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition"></textarea>
             </div>
           </div>
 
           <!-- VACCINATION DETAILS -->
-          <div id="section-vaccine" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-3">
-            <div class="flex items-center space-x-2 text-emerald-900 font-bold text-xs uppercase tracking-wider">
-              <i class="fa-solid fa-syringe text-emerald-600"></i>
+          <div id="section-vaccine" class="p-4 rounded-2xl bg-green-50 border border-green-200 space-y-3">
+            <div class="flex items-center space-x-2 text-green-900 font-bold text-xs uppercase tracking-wider">
+              <i class="fa-solid fa-syringe text-green-600"></i>
               <span>Vaccination Record (ভ্যাকসিন বিবরণ)</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block text-[11px] font-bold text-emerald-800 mb-1">
-                  1. Vaccine Name <span class="text-rose-500">*</span>
+                <label class="block text-xs font-bold text-green-800 mb-1">
+                  1. Vaccine Name <span class="text-red-500">*</span>
                 </label>
-                <select id="dog-vaccine-name" required onchange="handleVaccineChange(this.value)" class="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                <select id="dog-vaccine-name" required onchange="handleVaccineChange(this.value)" class="w-full px-3 py-2 bg-white border border-green-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 transition">
                   <option value="Rabies">Rabies (র‌্যাবিস)</option>
                   <option value="DHPPi (7-in-1)">DHPPi / 7-in-1</option>
                   <option value="Other">Other (অন্যান্য)</option>
                 </select>
-                <input type="text" id="dog-vaccine-custom" placeholder="Type vaccine name" class="hidden mt-1.5 w-full px-3 py-1.5 bg-white border border-emerald-300 rounded-xl text-xs font-semibold">
+                <input type="text" id="dog-vaccine-custom" placeholder="Type vaccine name" class="hidden mt-1.5 w-full px-3 py-1.5 bg-white border border-green-300 rounded-xl text-xs font-semibold">
               </div>
 
               <div>
-                <label class="block text-[11px] font-bold text-emerald-800 mb-1">
-                  2. Vaccination Date <span class="text-rose-500">*</span>
+                <label class="block text-xs font-bold text-green-800 mb-1">
+                  2. Vaccination Date <span class="text-red-500">*</span>
                 </label>
-                <input type="date" id="dog-vaccine-date" required onchange="autoCalculateNextVaccineDate()" class="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                <input type="date" id="dog-vaccine-date" required onchange="autoCalculateNextVaccineDate()" class="w-full px-3 py-2 bg-white border border-green-300 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 transition">
               </div>
 
               <div>
-                <label class="block text-[11px] font-bold text-emerald-800 mb-1">
-                  3. Next Due Date (+1 Year Auto) <span class="text-rose-500">*</span>
+                <label class="block text-xs font-bold text-green-800 mb-1">
+                  3. Next Due Date (+1 Year Auto) <span class="text-red-500">*</span>
                 </label>
-                <input type="date" id="dog-vaccine-next-date" required class="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-xs font-bold text-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                <input type="date" id="dog-vaccine-next-date" required class="w-full px-3 py-2 bg-white border border-green-300 rounded-xl text-xs font-bold text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
               </div>
             </div>
-            <p class="text-[10px] text-emerald-700 italic">
+            <p class="text-xs text-green-700 italic">
               * Rabies বা DHPPi সিলেক্ট করলে পরবর্তী ডেট অটোমেটিক ১ বছর পর সেট হবে।
             </p>
           </div>
 
           <!-- Buttons -->
-          <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
-            <button type="button" onclick="goToHome()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
+          <div class="flex items-center justify-end space-x-3 pt-3 border-t border-gray-100">
+            <button type="button" onclick="goToHome()" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition">
               Cancel
             </button>
-            <button type="submit" id="btn-submit-dog" class="px-7 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs rounded-xl shadow-lg shadow-orange-500/25 transition active:scale-95 flex items-center space-x-2">
+            <button type="submit" id="btn-submit-dog" class="px-7 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs rounded-xl shadow-md transition flex items-center space-x-2">
               <i class="fa-solid fa-cloud-arrow-up"></i>
               <span id="btn-submit-text">Save to Cloud</span>
             </button>
@@ -431,55 +421,55 @@
 
   <!-- 5. MODAL: FULL CANINE PASSPORT VIEW -->
   <div id="modal-details" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto">
      
-      <div class="relative h-48 bg-slate-900">
+      <div class="relative h-48 bg-gray-900">
         <img id="detail-img" src="" alt="Dog" class="w-full h-full object-cover">
-        <button onclick="closeDetailsModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition">
+        <button onclick="closeDetailsModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black bg-opacity-50 text-white flex items-center justify-center hover:bg-opacity-70 transition">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
-        <div class="absolute bottom-3 left-4 text-white drop-shadow-md">
+        <div class="absolute bottom-3 left-4 text-white">
           <h3 id="detail-name" class="text-2xl font-black"></h3>
-          <span id="detail-gender-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-white/20 backdrop-blur-md"></span>
+          <span id="detail-gender-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-white bg-opacity-20"></span>
         </div>
       </div>
 
       <div class="p-6 space-y-4 text-xs">
-        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+        <div class="grid grid-cols-2 gap-3 bg-gray-50 p-3.5 rounded-2xl border border-gray-200">
           <div>
-            <span class="text-slate-400 block font-bold uppercase text-[9px]">DOB</span>
-            <strong id="detail-dob" class="text-slate-800 text-sm"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">DOB</span>
+            <strong id="detail-dob" class="text-gray-800 text-sm"></strong>
           </div>
           <div>
-            <span class="text-slate-400 block font-bold uppercase text-[9px]">Dog ID</span>
-            <strong id="detail-id" class="text-slate-800 text-sm font-mono"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">Dog ID</span>
+            <strong id="detail-id" class="text-gray-800 text-sm font-mono"></strong>
           </div>
           <div>
-            <span class="text-slate-400 block font-bold uppercase text-[9px]">Father</span>
-            <strong id="detail-father" class="text-slate-800"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">Father</span>
+            <strong id="detail-father" class="text-gray-800"></strong>
           </div>
           <div>
-            <span class="text-slate-400 block font-bold uppercase text-[9px]">Mother</span>
-            <strong id="detail-mother" class="text-slate-800"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">Mother</span>
+            <strong id="detail-mother" class="text-gray-800"></strong>
           </div>
         </div>
 
-        <div class="space-y-1.5 border-t border-slate-100 pt-3">
+        <div class="space-y-1.5 border-t border-gray-100 pt-3">
           <div class="flex justify-between">
-            <span class="text-slate-500 font-medium">Owner:</span>
-            <strong id="detail-owner" class="text-slate-800"></strong>
+            <span class="text-gray-500 font-medium">Owner:</span>
+            <strong id="detail-owner" class="text-gray-800"></strong>
           </div>
           <div class="flex justify-between">
-            <span class="text-slate-500 font-medium">Mobile:</span>
-            <strong id="detail-mobile" class="text-slate-800"></strong>
+            <span class="text-gray-500 font-medium">Mobile:</span>
+            <strong id="detail-mobile" class="text-gray-800"></strong>
           </div>
           <div class="flex justify-between">
-            <span class="text-slate-500 font-medium">Gmail:</span>
-            <strong id="detail-gmail" class="text-slate-800"></strong>
+            <span class="text-gray-500 font-medium">Gmail:</span>
+            <strong id="detail-gmail" class="text-gray-800"></strong>
           </div>
           <div>
-            <span class="text-slate-500 font-medium block">Address:</span>
-            <p id="detail-address" class="text-slate-700 font-medium mt-0.5 bg-slate-50 p-2 rounded-xl"></p>
+            <span class="text-gray-500 font-medium block">Address:</span>
+            <p id="detail-address" class="text-gray-700 font-medium mt-0.5 bg-gray-50 p-2 rounded-xl"></p>
           </div>
         </div>
 
@@ -488,14 +478,14 @@
             <span>Latest Vaccine Status</span>
             <i class="fa-solid fa-syringe text-amber-600"></i>
           </div>
-          <div class="text-[11px] text-amber-800 space-y-1">
+          <div class="text-xs text-amber-800 space-y-1">
             <div>Vaccine Name: <strong id="detail-latest-vac"></strong></div>
             <div>Date Given: <strong id="detail-given-date"></strong></div>
             <div>Next Due: <strong id="detail-next-date"></strong></div>
           </div>
         </div>
 
-        <button onclick="closeDetailsModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition">
+        <button onclick="closeDetailsModal()" class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition">
           Close Passport
         </button>
       </div>
@@ -505,37 +495,37 @@
 
   <!-- 6. MODAL: VACCINE RECORDS & ADD DOSE -->
   <div id="modal-vaccines" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col">
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto flex flex-col">
      
-      <div class="p-5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-between">
+      <div class="p-5 bg-gradient-to-r from-green-600 to-teal-600 text-white flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-syringe text-xl"></i>
           <div>
             <h3 id="vac-modal-title" class="text-base font-black">Vaccine History</h3>
-            <span class="text-[10px] text-emerald-100 uppercase tracking-widest font-bold">Cloud Dose Management</span>
+            <span class="text-xs text-green-100 uppercase tracking-widest font-bold">Cloud Dose Management</span>
           </div>
         </div>
-        <button onclick="closeVaccineModal()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition">
+        <button onclick="closeVaccineModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
       <div class="p-5 space-y-5 flex-1 overflow-y-auto">
         <div class="space-y-2">
-          <span class="text-xs font-bold uppercase text-slate-400">Vaccine Dose History</span>
+          <span class="text-xs font-bold uppercase text-gray-400">Vaccine Dose History</span>
           <div id="vac-history-list" class="space-y-2 text-xs"></div>
         </div>
 
-        <form id="form-add-dose" onsubmit="handleAddNewDose(event)" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-          <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-plus-circle text-emerald-600"></i>
+        <form id="form-add-dose" onsubmit="handleAddNewDose(event)" class="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-3">
+          <div class="text-xs font-bold text-gray-800 flex items-center space-x-1.5">
+            <i class="fa-solid fa-plus-circle text-green-600"></i>
             <span>Log New Booster / Vaccine</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 mb-1">Vaccine Name</label>
-              <select id="dose-vac-name" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl font-semibold">
+              <label class="block text-xs font-bold text-gray-500 mb-1">Vaccine Name</label>
+              <select id="dose-vac-name" class="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-xl font-semibold">
                 <option value="Rabies">Rabies</option>
                 <option value="DHPPi (7-in-1)">DHPPi (7-in-1)</option>
                 <option value="Bordetella">Bordetella</option>
@@ -543,23 +533,23 @@
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 mb-1">Date Given</label>
-              <input type="date" id="dose-vac-date" required onchange="calcDoseNextDate()" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl font-semibold">
+              <label class="block text-xs font-bold text-gray-500 mb-1">Date Given</label>
+              <input type="date" id="dose-vac-date" required onchange="calcDoseNextDate()" class="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-xl font-semibold">
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-[10px] font-bold text-slate-500 mb-1">Next Due Date (+1 Year Auto)</label>
-              <input type="date" id="dose-vac-next" required class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl font-bold text-emerald-800">
+              <label class="block text-xs font-bold text-gray-500 mb-1">Next Due Date (+1 Year Auto)</label>
+              <input type="date" id="dose-vac-next" required class="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-xl font-bold text-green-800">
             </div>
           </div>
 
-          <button type="submit" id="btn-save-dose" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition">
+          <button type="submit" id="btn-save-dose" class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition">
             Save Dose to Record
           </button>
         </form>
       </div>
 
-      <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
-        <button onclick="closeVaccineModal()" class="px-5 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-100 transition">
+      <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+        <button onclick="closeVaccineModal()" class="px-5 py-2 bg-white border border-gray-200 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-100 transition">
           Done
         </button>
       </div>
@@ -569,198 +559,182 @@
 
   <!-- 7. MODAL: PVC DOG ID CARD -->
   <div id="modal-idcard" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl shadow-2xl border border-amber-100 max-w-xl w-full max-h-[95vh] overflow-y-auto flex flex-col">
+    <div class="bg-white rounded-3xl shadow-2xl border border-amber-100 max-w-xl w-full max-h-screen overflow-y-auto flex flex-col">
      
-      <div class="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 p-4 text-white sticky top-0 z-20 flex items-center justify-between shadow-xs">
+      <div class="bg-gradient-to-r from-orange-500 to-amber-600 p-4 text-white sticky top-0 z-20 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-sm shadow-inner">
+          <div class="w-8 h-8 rounded-xl bg-white bg-opacity-20 flex items-center justify-center text-sm shadow-inner">
             <i class="fa-solid fa-id-card"></i>
           </div>
           <div>
             <h3 class="text-sm sm:text-base font-black">Canine PVC Identity Card</h3>
-            <span class="text-[9px] uppercase font-bold text-amber-100">Ready to Print &amp; Save</span>
+            <span class="text-xs uppercase font-bold text-amber-100">Ready to Print &amp; Save</span>
           </div>
         </div>
-        <button onclick="closeIdCardModal()" class="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition">
+        <button onclick="closeIdCardModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
 
-      <!-- Tab Switch: Front / Back -->
-      <div class="px-4 py-2 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+      <!-- Tab Switch -->
+      <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between">
         <div class="flex space-x-1.5 text-xs font-bold">
-          <button id="pvc-tab-front" onclick="switchPvcTab('front')" class="px-3 py-1 rounded-lg bg-orange-500 text-white shadow-xs">Front (সামনের ভাগ)</button>
-          <button id="pvc-tab-back" onclick="switchPvcTab('back')" class="px-3 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300">Back (পিছন ভাগ)</button>
+          <button id="pvc-tab-front" onclick="switchPvcTab('front')" class="px-3 py-1 rounded-lg bg-orange-500 text-white">Front (সামনের ভাগ)</button>
+          <button id="pvc-tab-back" onclick="switchPvcTab('back')" class="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Back (পিছন ভাগ)</button>
         </div>
-        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Official Canine ID</span>
+        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Official Canine ID</span>
       </div>
 
-      <div class="p-4 sm:p-6 bg-slate-200/70 overflow-x-auto flex-1 flex justify-center items-center">
-       
-        <div id="pvc-export-container" class="w-full max-w-[440px]">
+      <div class="p-4 sm:p-6 bg-gray-200 overflow-x-auto flex-1 flex justify-center items-center">
+        <div id="pvc-export-container" class="w-full max-w-md">
 
           <!-- FRONT CARD FACE -->
-          <div id="pvc-front-view" class="bg-white rounded-2xl shadow-xl border border-slate-300 overflow-hidden text-slate-900 select-none font-sans relative">
-           
+          <div id="pvc-front-view" class="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
             <div class="pt-3 px-4 flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <div class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs shadow-xs">
+                <div class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs">
                   <i class="fa-solid fa-paw"></i>
                 </div>
                 <div>
-                  <div class="text-[11px] font-black uppercase text-slate-900 tracking-tight leading-none">DOG WORLD</div>
-                  <div class="text-[7.5px] uppercase font-bold text-slate-500 tracking-widest leading-none mt-0.5">Canine Registry</div>
+                  <div class="text-xs font-black uppercase text-gray-900 tracking-tight leading-none">DOG WORLD</div>
+                  <div class="text-xs uppercase font-bold text-gray-500 tracking-widest leading-none mt-0.5">Canine Registry</div>
                 </div>
               </div>
-
               <div class="text-amber-500 text-base">
                 <i class="fa-solid fa-sun"></i>
               </div>
             </div>
 
             <div class="mt-2.5 h-1.5 w-full flex">
-              <div class="h-full w-1/2 bg-[#FF9933]"></div>
-              <div class="h-full w-1/2 bg-[#138808]"></div>
+              <div class="h-full w-1/2 bg-yellow-500"></div>
+              <div class="h-full w-1/2 bg-green-600"></div>
             </div>
 
             <div class="p-4 flex gap-4 items-start">
               <div class="w-28 flex-shrink-0 flex flex-col items-center">
-                <div class="w-28 h-32 rounded-xl overflow-hidden border-2 border-slate-300 bg-slate-100 shadow-sm">
+                <div class="w-28 h-32 rounded-xl overflow-hidden border-2 border-gray-300 bg-gray-100 shadow-sm">
                   <img id="card-front-photo" src="" alt="Dog Photo" class="w-full h-full object-cover">
                 </div>
-                <div class="mt-1.5 w-full py-0.5 px-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 text-[8px] font-black rounded-md flex items-center justify-center gap-1 shadow-2xs border border-amber-500/40">
-                  <i class="fa-solid fa-circle-check text-[9px] text-amber-900"></i>
+                <div class="mt-1.5 w-full py-0.5 px-1 bg-yellow-300 text-yellow-900 text-xs font-black rounded flex items-center justify-center space-x-1 border border-yellow-500">
+                  <i class="fa-solid fa-circle-check text-xs"></i>
                   <span>PVC VERIFIED</span>
                 </div>
               </div>
 
-              <div class="flex-1 space-y-1 text-[10.5px] leading-tight pt-0.5">
+              <div class="flex-1 space-y-1 text-xs leading-tight pt-0.5">
                 <div>
-                  <span class="text-[8.5px] text-slate-400 block font-semibold">নাম / Name:</span>
-                  <span id="card-front-name" class="font-black text-sm text-slate-900 block truncate"></span>
+                  <span class="text-xs text-gray-400 block font-semibold">নাম / Name:</span>
+                  <span id="card-front-name" class="font-black text-sm text-gray-900 block truncate"></span>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">জন্ম তারিখ / DOB:</span>
-                  <strong id="card-front-dob" class="text-slate-800 text-[10px]"></strong>
+                  <span class="w-24 text-gray-500">জন্ম তারিখ / DOB:</span>
+                  <strong id="card-front-dob" class="text-gray-800"></strong>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">পিতার নাম / Father:</span>
-                  <strong id="card-front-father" class="text-slate-800 text-[10px] truncate"></strong>
+                  <span class="w-24 text-gray-500">পিতার নাম / Father:</span>
+                  <strong id="card-front-father" class="text-gray-800 truncate"></strong>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">মাতার নাম / Mother:</span>
-                  <strong id="card-front-mother" class="text-slate-800 text-[10px] truncate"></strong>
+                  <span class="w-24 text-gray-500">মাতার নাম / Mother:</span>
+                  <strong id="card-front-mother" class="text-gray-800 truncate"></strong>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">মালিকের নাম / Owner:</span>
-                  <strong id="card-front-owner" class="text-slate-800 text-[10px] truncate"></strong>
+                  <span class="w-24 text-gray-500">মালিকের নাম / Owner:</span>
+                  <strong id="card-front-owner" class="text-gray-800 truncate"></strong>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">ডগ আইডি / Dog ID:</span>
-                  <strong id="card-front-id" class="text-slate-900 text-[10px] font-black"></strong>
+                  <span class="w-24 text-gray-500">ডগ আইডি / Dog ID:</span>
+                  <strong id="card-front-id" class="text-gray-900 font-black"></strong>
                 </div>
-
                 <div class="flex">
-                  <span class="w-24 text-[9.5px] text-slate-500">লিঙ্গ / Gender:</span>
-                  <strong id="card-front-gender" class="text-slate-800 text-[10px]"></strong>
+                  <span class="w-24 text-gray-500">লিঙ্গ / Gender:</span>
+                  <strong id="card-front-gender" class="text-gray-800"></strong>
                 </div>
               </div>
             </div>
 
-            <div class="pt-1 pb-1.5 text-center bg-gradient-to-b from-white to-amber-50/40">
-              <div id="card-front-aadhaar" class="text-base sm:text-lg font-black font-mono tracking-widest text-rose-700"></div>
-              <div id="card-front-subid" class="text-[8px] uppercase font-bold text-slate-400"></div>
+            <div class="pt-1 pb-1.5 text-center bg-gray-50">
+              <div id="card-front-serial" class="text-base sm:text-lg font-black font-mono tracking-widest text-red-700"></div>
+              <div id="card-front-subid" class="text-xs uppercase font-bold text-gray-400"></div>
             </div>
 
-            <div class="bg-[#b91c1c] text-white py-1.5 px-3 text-center text-[9.5px] font-bold font-bengali">
+            <div class="bg-red-700 text-white py-1.5 px-3 text-center text-xs font-bold">
               আমার কুকুর, আমার পরিবার — সাধারণ কুকুরের অধিকার
             </div>
-
           </div>
 
           <!-- BACK CARD FACE -->
-          <div id="pvc-back-view" class="hidden bg-white rounded-2xl shadow-xl border border-slate-300 overflow-hidden text-slate-900 select-none font-sans relative">
-           
-            <div class="bg-slate-100 px-4 py-1 flex items-center justify-between text-[8.5px] font-bold uppercase text-slate-500 border-b border-slate-200">
+          <div id="pvc-back-view" class="hidden bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
+            <div class="bg-gray-100 px-4 py-1 flex items-center justify-between text-xs font-bold uppercase text-gray-500 border-b border-gray-200">
               <span>পিছন ভাগ (BACK SIDE)</span>
-              <span class="bg-white px-2 py-0.5 rounded border border-slate-200">ADDRESS &amp; QR</span>
+              <span class="bg-white px-2 py-0.5 rounded border border-gray-200">ADDRESS &amp; QR</span>
             </div>
 
             <div class="h-1.5 w-full flex">
-              <div class="h-full w-1/2 bg-[#FF9933]"></div>
-              <div class="h-full w-1/2 bg-[#138808]"></div>
+              <div class="h-full w-1/2 bg-yellow-500"></div>
+              <div class="h-full w-1/2 bg-green-600"></div>
             </div>
 
             <div class="p-4 flex gap-3 items-start">
-             
-              <div class="flex-1 space-y-1.5 text-[9.5px] leading-relaxed">
+              <div class="flex-1 space-y-1.5 text-xs leading-relaxed">
                 <div>
-                  <strong class="text-slate-900 block font-bold text-[10px] font-bengali">ঠিকানা:</strong>
-                  <div class="text-slate-600">
-                    কেয়ার অফ: <strong id="card-back-owner-bn" class="text-slate-800"></strong><br>
+                  <strong class="text-gray-900 block font-bold text-xs">ঠিকানা:</strong>
+                  <div class="text-gray-600">
+                    কেয়ার অফ: <strong id="card-back-owner-bn" class="text-gray-800"></strong><br>
                     <span id="card-back-addr-bn" class="break-words"></span><br>
-                    জরুরী ফোন: <strong id="card-back-phone-bn" class="text-slate-900 font-bold"></strong>
+                    জরুরী ফোন: <strong id="card-back-phone-bn" class="text-gray-900 font-bold"></strong>
                   </div>
                 </div>
 
-                <div class="border-t border-slate-100 pt-1">
-                  <strong class="text-slate-900 block font-bold text-[9px]">Address:</strong>
-                  <div class="text-slate-600 text-[9px]">
-                    C/O: <strong id="card-back-owner-en" class="text-slate-800"></strong><br>
+                <div class="border-t border-gray-100 pt-1">
+                  <strong class="text-gray-900 block font-bold text-xs">Address:</strong>
+                  <div class="text-gray-600 text-xs">
+                    C/O: <strong id="card-back-owner-en" class="text-gray-800"></strong><br>
                     <span id="card-back-addr-en" class="break-words"></span><br>
-                    Contact: <strong id="card-back-phone-en" class="text-slate-900 font-bold"></strong>
+                    Contact: <strong id="card-back-phone-en" class="text-gray-900 font-bold"></strong>
                   </div>
                 </div>
               </div>
 
-              <!-- Scannable QR -->
               <div class="w-28 flex-shrink-0 flex flex-col items-center justify-center pt-1">
-                <div class="p-1.5 bg-white rounded-xl border border-slate-300 shadow-2xs flex flex-col items-center">
+                <div class="p-1.5 bg-white rounded-xl border border-gray-300 flex flex-col items-center">
                   <canvas id="card-qr-canvas" width="110" height="110" class="w-24 h-24"></canvas>
                 </div>
-                <span class="text-[7.5px] text-center text-slate-500 font-bold mt-1 font-bengali leading-none">
-                  স্ক্যান করে তথ্য যাচাই করুন
+                <span class="text-xs text-center text-gray-500 font-bold mt-1 leading-none">
+                  স্ক্যান করে যাচাই করুন
                 </span>
               </div>
-
             </div>
 
-            <div class="pt-1 pb-1 text-center bg-gradient-to-b from-white to-amber-50/40">
-              <div id="card-back-aadhaar" class="text-sm sm:text-base font-black font-mono tracking-widest text-rose-700"></div>
-              <div class="text-[7.5px] text-slate-500 font-medium flex items-center justify-center gap-3">
+            <div class="pt-1 pb-1 text-center bg-gray-50">
+              <div id="card-back-serial" class="text-sm sm:text-base font-black font-mono tracking-widest text-red-700"></div>
+              <div class="text-xs text-gray-500 font-medium flex items-center justify-center space-x-3">
                 <span id="card-back-subid"></span>
                 <span>বৈধতা: <strong>আজীবন (LIFETIME)</strong></span>
               </div>
             </div>
 
-            <div class="bg-slate-900 text-white py-1 px-3 text-center text-[8.5px] font-medium font-bengali truncate">
+            <div class="bg-gray-900 text-white py-1 px-3 text-center text-xs font-medium truncate">
               হারিয়ে গেলে যোগাযোগ করুন: <strong id="card-back-helpline" class="text-amber-300"></strong>
             </div>
-
           </div>
 
         </div>
-
       </div>
 
-      <div class="p-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span class="text-[11px] text-slate-500 font-medium text-center sm:text-left">
-          <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>
+      <div class="p-4 bg-white border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span class="text-xs text-gray-500 font-medium text-center sm:text-left">
+          <i class="fa-solid fa-circle-check text-green-500 mr-1"></i>
           High-resolution image ready for PVC card printing
         </span>
 
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button onclick="shareIdCardWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95">
+        <div class="flex items-center space-x-2 w-full sm:w-auto">
+          <button onclick="shareIdCardWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5">
             <i class="fa-brands fa-whatsapp text-sm"></i>
             <span>WhatsApp</span>
           </button>
 
-          <button id="btn-download-png" onclick="downloadIdCardImage()" class="flex-1 sm:flex-none px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-black text-xs rounded-xl shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-1.5 active:scale-95">
+          <button id="btn-download-png" onclick="downloadIdCardImage()" class="flex-1 sm:flex-none px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-black text-xs rounded-xl shadow transition flex items-center justify-center space-x-1.5">
             <i class="fa-solid fa-download"></i>
             <span>Download (PNG)</span>
           </button>
@@ -771,28 +745,25 @@
   </div>
 
   <!-- 8. FOOTER -->
-  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
-    <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-400 font-medium">
+  <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400 font-medium">
       DOG WORLD &copy; 2026 &bull; Secure Digital Canine Registry &bull; Powered by Google Cloud Firebase
     </div>
   </footer>
 
   <!-- 9. JAVASCRIPT APPLICATION LOGIC -->
   <script>
-    // =================================================================
-    // 🔥 FIREBASE CONFIGURATION (PASTE YOUR VALUES HERE)
-    // =================================================================
+    // Firebase Configuration
     const firebaseConfig = {
-     apiKey: "AIzaSyDSiLV__AxQrZQvtdzCDXnZ_Ic0QU0YmnM",
-  authDomain: "dog-world-709b3.firebaseapp.com",
-  projectId: "dog-world-709b3",
-  storageBucket: "dog-world-709b3.firebasestorage.app",
-  messagingSenderId: "300453888968",
-  appId: "1:300453888968:web:bf8e2babc88974f38eb6fd",
-  measurementId: "G-C97MWD8XXM"
+      apiKey: "AIzaSyDSiLV__AxQrZQvtdzCDXnZ_Ic0QU0YmnM",
+      authDomain: "dog-world-709b3.firebaseapp.com",
+      projectId: "dog-world-709b3",
+      storageBucket: "dog-world-709b3.firebasestorage.app",
+      messagingSenderId: "300453888968",
+      appId: "1:300453888968:web:bf8e2babc88974f38eb6fd",
+      measurementId: "G-C97MWD8XXM"
     };
 
-    // Initialize Firebase
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -800,7 +771,6 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    // GLOBAL APP STATE
     let currentUser = null;
     let registeredDogs = [];
     let selectedPhotoFile = null;
@@ -810,7 +780,6 @@
     let activeVaccineDog = null;
     let editingDogId = null;
 
-    // Helper: Date calculation (+1 Year)
     function calculateNextYearDate(dateString) {
       if (!dateString) return "";
       const parts = dateString.split("-");
@@ -819,7 +788,6 @@
       return `${nextYear}-${parts[1]}-${parts[2]}`;
     }
 
-    // Helper: Phone Sanitizer
     function sanitizePhoneNumber(phone) {
       if (!phone) return "";
       let cleaned = phone.toString().replace(/\D/g, "");
@@ -831,16 +799,15 @@
       return cleaned;
     }
 
-    // Toast Popup
     function showToast(message, type = "info") {
       const toast = document.getElementById("toast");
       const msg = document.getElementById("toast-msg");
       const icon = document.getElementById("toast-icon");
 
       toast.className = `fixed top-5 right-5 z-50 max-w-sm px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center space-x-3 transition-all duration-300 ${
-        type === "success" ? "bg-emerald-600 text-white" :
-        type === "error" ? "bg-rose-600 text-white" :
-        "bg-slate-900 text-white"
+        type === "success" ? "bg-green-600 text-white" :
+        type === "error" ? "bg-red-600 text-white" :
+        "bg-gray-900 text-white"
       }`;
 
       icon.className = type === "success" ? "fa-solid fa-circle-check" :
@@ -864,9 +831,6 @@
       }, 700);
     }
 
-    // =================================================================
-    // AUTHENTICATION OBSERVER (FIREBASE)
-    // =================================================================
     auth.onAuthStateChanged(async (user) => {
       dismissSplash();
       if (user) {
@@ -891,8 +855,8 @@
       if (currentUser) {
         bar.innerHTML = `
           <div class="flex items-center space-x-2">
-            <span class="text-xs font-bold text-slate-700 hidden sm:inline">${currentUser.name}</span>
-            <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 text-xs font-bold transition flex items-center gap-1.5">
+            <span class="text-xs font-bold text-gray-700 hidden sm:inline">${currentUser.name}</span>
+            <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-600 text-xs font-bold transition flex items-center space-x-1.5">
               <i class="fa-solid fa-arrow-right-from-bracket"></i>
               <span>Logout</span>
             </button>
@@ -914,26 +878,24 @@
       const formSignup = document.getElementById("form-signup");
 
       if (tab === "login") {
-        tabLogin.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow-xs transition";
-        tabSignup.className = "py-2.5 rounded-2xl text-slate-600 hover:text-slate-900 transition";
+        tabLogin.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow transition";
+        tabSignup.className = "py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition";
         formLogin.classList.remove("hidden");
         formSignup.classList.add("hidden");
       } else {
-        tabSignup.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow-xs transition";
-        tabLogin.className = "py-2.5 rounded-2xl text-slate-600 hover:text-slate-900 transition";
+        tabSignup.className = "py-2.5 rounded-2xl bg-white text-orange-600 shadow transition";
+        tabLogin.className = "py-2.5 rounded-2xl text-gray-600 hover:text-gray-900 transition";
         formSignup.classList.remove("hidden");
         formLogin.classList.add("hidden");
       }
     }
 
-    // Google Sign-In Handler
     async function handleGoogleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       try {
         const result = await auth.signInWithPopup(provider);
         const user = result.user;
 
-        // Save or update user info in Firestore
         await db.collection("users").doc(user.uid).set({
           name: user.displayName || "Dog Owner",
           email: user.email,
@@ -942,12 +904,10 @@
 
         showToast(`Welcome, ${user.displayName}!`, "success");
       } catch (error) {
-        console.error("Google Auth Error:", error);
         showToast(error.message, "error");
       }
     }
 
-    // Email/Password Login
     async function handleLoginSubmit(e) {
       e.preventDefault();
       const email = document.getElementById("login-email").value.trim().toLowerCase();
@@ -968,7 +928,6 @@
       }
     }
 
-    // Email/Password Signup
     async function handleSignupSubmit(e) {
       e.preventDefault();
       const name = document.getElementById("signup-name").value.trim();
@@ -1007,9 +966,6 @@
       }
     }
 
-    // =================================================================
-    // NAVIGATION & VIEWS
-    // =================================================================
     function hideAllViews() {
       document.getElementById("view-auth").classList.add("hidden");
       document.getElementById("view-dashboard").classList.add("hidden");
@@ -1116,9 +1072,6 @@
       document.getElementById("dog-vaccine-next-date").value = dog.vaccineNextDate;
     }
 
-    // =================================================================
-    // FIRESTORE & STORAGE DATA SYNC
-    // =================================================================
     async function loadDogsFromFirebase() {
       if (!currentUser) return;
       try {
@@ -1138,7 +1091,6 @@
 
     function isVaccineDueWithin15Days(nextDateStr) {
       if (!nextDateStr) return { isDue: false, daysRemaining: 999, isOverdue: false };
-     
       const parts = nextDateStr.split("-");
       if (parts.length !== 3) return { isDue: false, daysRemaining: 999, isOverdue: false };
 
@@ -1169,17 +1121,17 @@
       if (registeredDogs.length === 0) {
         container.className = "block";
         container.innerHTML = `
-          <div class="bg-white rounded-3xl border border-dashed border-slate-300 p-10 text-center space-y-4">
+          <div class="bg-white rounded-3xl border border-dashed border-gray-300 p-10 text-center space-y-4">
             <div class="w-20 h-20 mx-auto rounded-3xl bg-orange-50 text-orange-500 flex items-center justify-center text-3xl shadow-inner">
               <i class="fa-solid fa-dog"></i>
             </div>
             <div>
-              <h3 class="text-lg font-black text-slate-800">No Dogs Registered Yet</h3>
-              <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto font-bengali">
+              <h3 class="text-lg font-black text-gray-800">No Dogs Registered Yet</h3>
+              <p class="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
                 আপনার কুকুরের তথ্য, ছবি এবং ভ্যাকসিন রেকর্ড ক্লাউডে সেভ করতে এখনই যোগ করুন
               </p>
             </div>
-            <button onclick="goToAddPetView()" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-orange-500/25 transition active:scale-95 inline-flex items-center space-x-2">
+            <button onclick="goToAddPetView()" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs rounded-2xl shadow-md transition inline-flex items-center space-x-2">
               <i class="fa-solid fa-plus"></i>
               <span>+ Add a Pet</span>
             </button>
@@ -1195,16 +1147,16 @@
         const isAdopted = dog.isAdopted;
 
         let warningBadge = "";
-        let borderAlert = "border-slate-200";
+        let borderAlert = "border-gray-200";
 
         if (vaccineWarning.isDue) {
-          borderAlert = "border-rose-400 ring-2 ring-rose-300";
+          borderAlert = "border-red-400";
           const alertText = vaccineWarning.isOverdue
             ? `⚠️ VACCINE OVERDUE (${Math.abs(vaccineWarning.daysRemaining)} days ago)`
             : `⚠️ VACCINE DUE IN ${vaccineWarning.daysRemaining} DAY(S)!`;
 
           warningBadge = `
-            <div class="bg-rose-600 text-white text-[10px] font-black px-3 py-1 text-center animate-pulse-fast flex items-center justify-center gap-1">
+            <div class="bg-red-600 text-white text-xs font-black px-3 py-1 text-center animate-pulse-fast flex items-center justify-center space-x-1">
               <i class="fa-solid fa-triangle-exclamation"></i>
               <span>${alertText}</span>
             </div>
@@ -1212,25 +1164,25 @@
         }
 
         return `
-          <div class="bg-white rounded-3xl border ${borderAlert} shadow-lg overflow-hidden flex flex-col justify-between transition hover:-translate-y-1">
+          <div class="bg-white rounded-3xl border ${borderAlert} shadow-lg overflow-hidden flex flex-col justify-between transition">
             ${warningBadge}
 
-            <div class="relative h-48 bg-slate-800 overflow-hidden">
+            <div class="relative h-48 bg-gray-800 overflow-hidden">
               <img src="${dog.photo}" alt="${dog.name}" class="w-full h-full object-cover">
              
               <div class="absolute top-3 left-3 flex items-center space-x-1.5">
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-black ${dog.gender === 'Male' ? 'bg-sky-500 text-white' : 'bg-pink-500 text-white'} shadow-sm">
+                <span class="px-2.5 py-1 rounded-full text-xs font-black ${dog.gender === 'Male' ? 'bg-blue-500 text-white' : 'bg-pink-500 text-white'} shadow-sm">
                   ${dog.gender}
                 </span>
                 ${isAdopted ? `
-                  <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-500 text-white shadow-sm flex items-center gap-1">
+                  <span class="px-2.5 py-1 rounded-full text-xs font-black bg-amber-500 text-white shadow-sm flex items-center space-x-1">
                     <i class="fa-solid fa-heart"></i>
                     <span>Adopted</span>
                   </span>
                 ` : ''}
               </div>
 
-              <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+              <div class="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">
                 #${idx + 1}
               </div>
             </div>
@@ -1238,58 +1190,58 @@
             <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
               <div>
                 <div class="flex items-start justify-between">
-                  <h3 class="text-xl font-black text-slate-900 truncate">${dog.name}</h3>
-                  <button onclick="openEditPetView('${dog.id}')" title="Edit Dog Details" class="text-slate-400 hover:text-orange-600 text-xs font-bold flex items-center gap-1 transition">
+                  <h3 class="text-xl font-black text-gray-900 truncate">${dog.name}</h3>
+                  <button onclick="openEditPetView('${dog.id}')" class="text-gray-400 hover:text-orange-600 text-xs font-bold flex items-center space-x-1 transition">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Edit</span>
                   </button>
                 </div>
 
-                <div class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                <div class="text-xs text-gray-500 flex items-center space-x-1.5 mt-0.5">
                   <i class="fa-solid fa-cake-candles text-amber-500"></i>
                   <span>DOB: <strong>${dog.dob}</strong></span>
                 </div>
 
-                <div class="mt-3 grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                   <div>
-                    <span class="text-slate-400 block text-[9px] uppercase font-bold">Father</span>
-                    <strong class="text-slate-700 truncate block">${dog.father || "Adopted / Unknown"}</strong>
+                    <span class="text-gray-400 block text-xs uppercase font-bold">Father</span>
+                    <strong class="text-gray-700 truncate block">${dog.father || "Adopted / Unknown"}</strong>
                   </div>
                   <div>
-                    <span class="text-slate-400 block text-[9px] uppercase font-bold">Mother</span>
-                    <strong class="text-slate-700 truncate block">${dog.mother || "Adopted / Unknown"}</strong>
+                    <span class="text-gray-400 block text-xs uppercase font-bold">Mother</span>
+                    <strong class="text-gray-700 truncate block">${dog.mother || "Adopted / Unknown"}</strong>
                   </div>
                 </div>
 
-                <div class="mt-3 bg-emerald-50/80 border border-emerald-200 rounded-xl p-2.5 text-[11px]">
-                  <div class="flex items-center justify-between font-bold text-emerald-900 mb-1">
+                <div class="mt-3 bg-green-50 border border-green-200 rounded-xl p-2.5 text-xs">
+                  <div class="flex items-center justify-between font-bold text-green-900 mb-1">
                     <span class="truncate">${dog.vaccineName}</span>
-                    <span class="text-[9px] bg-emerald-200 text-emerald-950 px-1.5 py-0.5 rounded-full flex-shrink-0">Latest</span>
+                    <span class="text-xs bg-green-200 text-green-950 px-1.5 py-0.5 rounded-full">Latest</span>
                   </div>
-                  <div class="flex justify-between text-[10px] text-emerald-800">
+                  <div class="flex justify-between text-xs text-green-800">
                     <span>Date: <strong>${dog.vaccineDate}</strong></span>
-                    <span>Next: <strong class="${vaccineWarning.isDue ? 'text-rose-600 font-black' : ''}">${dog.vaccineNextDate}</strong></span>
+                    <span>Next: <strong class="${vaccineWarning.isDue ? 'text-red-600 font-black' : ''}">${dog.vaccineNextDate}</strong></span>
                   </div>
                 </div>
               </div>
 
-              <div class="pt-3 border-t border-slate-100 space-y-2">
-                <button onclick="openIdCardModal('${dog.id}')" class="w-full py-2.5 px-4 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-orange-500/20 transition flex items-center justify-center space-x-1.5 active:scale-95">
+              <div class="pt-3 border-t border-gray-100 space-y-2">
+                <button onclick="openIdCardModal('${dog.id}')" class="w-full py-2.5 px-4 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-1.5">
                   <i class="fa-solid fa-id-card"></i>
                   <span>Share / PVC Card</span>
-                  <i class="fa-solid fa-download text-[10px] ml-1"></i>
+                  <i class="fa-solid fa-download text-xs ml-1"></i>
                 </button>
 
                 <div class="flex items-center space-x-2">
-                  <button onclick="openDetailsModal('${dog.id}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
+                  <button onclick="openDetailsModal('${dog.id}')" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
                     <i class="fa-solid fa-passport text-orange-500"></i>
                     <span>Passport</span>
                   </button>
-                  <button onclick="openVaccineModal('${dog.id}')" class="flex-1 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
-                    <i class="fa-solid fa-syringe text-emerald-600"></i>
+                  <button onclick="openVaccineModal('${dog.id}')" class="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-800 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
+                    <i class="fa-solid fa-syringe text-green-600"></i>
                     <span>Vaccines</span>
                   </button>
-                  <button onclick="deleteDog('${dog.id}', '${dog.name}')" title="Delete" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition">
+                  <button onclick="deleteDog('${dog.id}', '${dog.name}')" class="p-2 text-gray-400 hover:text-red-600 rounded-xl transition">
                     <i class="fa-solid fa-trash-can text-xs"></i>
                   </button>
                 </div>
@@ -1302,7 +1254,7 @@
 
       if (registeredDogs.length < 10) {
         addAnotherWrap.innerHTML = `
-          <button onclick="goToAddPetView()" class="px-8 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl shadow-orange-500/25 transition active:scale-95 flex items-center space-x-2">
+          <button onclick="goToAddPetView()" class="px-8 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl transition flex items-center space-x-2">
             <i class="fa-solid fa-plus-circle text-base"></i>
             <span>+ Add Another Dog Details (${registeredDogs.length}/10)</span>
           </button>
@@ -1332,8 +1284,8 @@
         astMother.classList.add("hidden");
         fatherInput.placeholder = "Optional (Adopted - leave blank)";
         motherInput.placeholder = "Optional (Adopted - leave blank)";
-        fatherInput.classList.add("bg-amber-50", "border-amber-300");
-        motherInput.classList.add("bg-amber-50", "border-amber-300");
+        fatherInput.classList.add("bg-amber-50");
+        motherInput.classList.add("bg-amber-50");
         lblFather.classList.add("text-amber-800");
         lblMother.classList.add("text-amber-800");
       } else {
@@ -1343,8 +1295,8 @@
         astMother.classList.remove("hidden");
         fatherInput.placeholder = "Enter father's name";
         motherInput.placeholder = "Enter mother's name";
-        fatherInput.classList.remove("bg-amber-50", "border-amber-300");
-        motherInput.classList.remove("bg-amber-50", "border-amber-300");
+        fatherInput.classList.remove("bg-amber-50");
+        motherInput.classList.remove("bg-amber-50");
         lblFather.classList.remove("text-amber-800");
         lblMother.classList.remove("text-amber-800");
       }
@@ -1381,13 +1333,11 @@
       const nextDateInput = document.getElementById("dog-vaccine-next-date");
 
       if (!givenDateVal) return;
-
       if (vacType === "Rabies" || vacType === "DHPPi (7-in-1)") {
         nextDateInput.value = calculateNextYearDate(givenDateVal);
       }
     }
 
-    // Save/Update Pet in Cloud Firestore + Firebase Storage
     async function handleSaveDogSubmit(e) {
       e.preventDefault();
 
@@ -1414,7 +1364,6 @@
       try {
         let photoURL = currentUploadedPhotoBase64;
 
-        // Upload photo to Firebase Storage if a new file is chosen
         if (selectedPhotoFile) {
           const fileExt = selectedPhotoFile.name.split('.').pop();
           const storagePath = `dog_photos/${currentUser.uid}/${Date.now()}.${fileExt}`;
@@ -1475,7 +1424,6 @@
         await loadDogsFromFirebase();
         goToDashboard();
       } catch (err) {
-        console.error("Save error:", err);
         showToast("Error saving: " + err.message, "error");
       } finally {
         btn.disabled = false;
@@ -1497,9 +1445,6 @@
       }
     }
 
-    // =================================================================
-    // PASSPORT MODAL
-    // =================================================================
     function openDetailsModal(dogId) {
       const dog = registeredDogs.find(d => d.id === dogId);
       if (!dog) return;
@@ -1527,9 +1472,6 @@
       document.getElementById("modal-details").classList.add("hidden");
     }
 
-    // =================================================================
-    // VACCINES HISTORY MODAL
-    // =================================================================
     function openVaccineModal(dogId) {
       const dog = registeredDogs.find(d => d.id === dogId);
       if (!dog) return;
@@ -1562,19 +1504,19 @@
       const history = activeVaccineDog.vaccineHistory || [];
 
       if (history.length === 0) {
-        listEl.innerHTML = `<div class="p-3 text-center text-slate-400 bg-slate-50 rounded-xl">No prior dose history.</div>`;
+        listEl.innerHTML = `<div class="p-3 text-center text-gray-400 bg-gray-50 rounded-xl">No prior dose history.</div>`;
         return;
       }
 
       listEl.innerHTML = history.slice().reverse().map(item => `
-        <div class="p-3 bg-white border border-slate-200 rounded-2xl flex items-center justify-between shadow-2xs">
+        <div class="p-3 bg-white border border-gray-200 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
-            <strong class="text-slate-800 text-xs block">${item.name}</strong>
-            <span class="text-[10px] text-slate-500">Given on: <strong>${item.dateGiven}</strong></span>
+            <strong class="text-gray-800 text-xs block">${item.name}</strong>
+            <span class="text-xs text-gray-500">Given on: <strong>${item.dateGiven}</strong></span>
           </div>
           <div class="text-right">
-            <span class="text-[9px] uppercase font-bold text-slate-400 block">Next Due</span>
-            <span class="text-xs font-black text-emerald-700">${item.nextDue}</span>
+            <span class="text-xs uppercase font-bold text-gray-400 block">Next Due</span>
+            <span class="text-xs font-black text-green-700">${item.nextDue}</span>
           </div>
         </div>
       `).join("");
@@ -1624,28 +1566,19 @@
       }
     }
 
-    // =================================================================
-    // PVC DOG ID CARD MODAL & GENERATOR
-    // =================================================================
-    function generateIdNumber(dog, index = 1) {
-      let dPart = "0406";
-      if (dog.dob) {
-        const parts = dog.dob.split("-");
-        if (parts.length === 3) dPart = parts[2] + parts[1];
-      }
+    function generateSerial(dog, index = 1) {
       const yPart = dog.dob ? dog.dob.substring(0, 4) : "2026";
       const idNum = String(index).padStart(4, "0");
       const shortId = String(index).padStart(2, "0");
 
       return {
-        formatted: `${dPart} &nbsp; ${yPart} &nbsp; ${idNum}`,
-        clean: `${dPart} ${yPart} ${idNum}`,
+        formatted: `DW &bull; ${yPart} &bull; ${idNum}`,
         shortId: shortId
       };
     }
 
     function drawCardQrCode(dog) {
-      const qrPayload = `🐾 DOG WORLD REGISTRY\nName: ${dog.name}\nDOB: ${dog.dob}\nOwner: ${dog.owner}\nMobile: +91 ${dog.mobile}\nVaccine: ${dog.vaccineName} (${dog.vaccineDate})\nCloud Verified`;
+      const qrPayload = `🐾 DOG WORLD REGISTRY\nName: ${dog.name}\nDOB: ${dog.dob}\nOwner: ${dog.owner}\nMobile: +91 ${dog.mobile}\nVaccine: ${dog.vaccineName}\nCloud Verified`;
       try {
         const qrCanvas = document.getElementById("card-qr-canvas");
         new QRious({
@@ -1665,29 +1598,27 @@
       if (!dog) return;
 
       activeCardDog = dog;
-      const idData = generateIdNumber(dog, dogIdx + 1);
+      const serialData = generateSerial(dog, dogIdx + 1);
 
-      // FRONT FACE
       document.getElementById("card-front-photo").src = dog.photo;
       document.getElementById("card-front-name").textContent = `${dog.name.toUpperCase()} (${dog.name})`;
       document.getElementById("card-front-dob").textContent = dog.dob;
       document.getElementById("card-front-father").textContent = dog.father || "Adopted / Unknown";
       document.getElementById("card-front-mother").textContent = dog.mother || "Adopted / Unknown";
       document.getElementById("card-front-owner").textContent = dog.owner;
-      document.getElementById("card-front-id").textContent = idData.shortId;
+      document.getElementById("card-front-id").textContent = serialData.shortId;
       document.getElementById("card-front-gender").textContent = dog.gender === "Male" ? "MALE (পুরুষ)" : "FEMALE (স্ত্রী)";
-      document.getElementById("card-front-aadhaar").innerHTML = idData.formatted;
-      document.getElementById("card-front-subid").textContent = `CANINE ID: ${idData.shortId}`;
+      document.getElementById("card-front-serial").innerHTML = serialData.formatted;
+      document.getElementById("card-front-subid").textContent = `CANINE ID: ${serialData.shortId}`;
 
-      // BACK FACE
       document.getElementById("card-back-owner-bn").textContent = dog.owner;
       document.getElementById("card-back-owner-en").textContent = dog.owner;
       document.getElementById("card-back-addr-bn").textContent = dog.address;
       document.getElementById("card-back-addr-en").textContent = dog.address;
       document.getElementById("card-back-phone-bn").textContent = "+91 " + dog.mobile;
       document.getElementById("card-back-phone-en").textContent = "+91 " + dog.mobile;
-      document.getElementById("card-back-aadhaar").innerHTML = idData.formatted;
-      document.getElementById("card-back-subid").textContent = `CANINE ID: ${idData.shortId}`;
+      document.getElementById("card-back-serial").innerHTML = serialData.formatted;
+      document.getElementById("card-back-subid").textContent = `CANINE ID: ${serialData.shortId}`;
       document.getElementById("card-back-helpline").textContent = `+91 ${dog.mobile} | ${dog.email}`;
 
       switchPvcTab("front");
@@ -1709,13 +1640,13 @@
       if (tab === "front") {
         front.classList.remove("hidden");
         back.classList.add("hidden");
-        tabFront.className = "px-3 py-1 rounded-lg bg-orange-500 text-white shadow-xs";
-        tabBack.className = "px-3 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300";
+        tabFront.className = "px-3 py-1 rounded-lg bg-orange-500 text-white";
+        tabBack.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
       } else {
         front.classList.add("hidden");
         back.classList.remove("hidden");
-        tabBack.className = "px-3 py-1 rounded-lg bg-orange-500 text-white shadow-xs";
-        tabFront.className = "px-3 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300";
+        tabBack.className = "px-3 py-1 rounded-lg bg-orange-500 text-white";
+        tabFront.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
         if (activeCardDog) {
           drawCardQrCode(activeCardDog);
         }
@@ -1751,9 +1682,8 @@
         link.click();
         document.body.removeChild(link);
 
-        showToast(`🎉 ${activeCardDog.name}'s ${currentPvcTab.toUpperCase()} card downloaded!`, "success");
+        showToast(`🎉 ${activeCardDog.name}'s card downloaded!`, "success");
       } catch (err) {
-        console.error("Export error:", err);
         showToast("Error generating card image. Please try again.", "error");
       } finally {
         btn.disabled = false;
@@ -1777,7 +1707,6 @@
       window.open(url, "_blank");
     }
 
-    // Expose functions globally
     window.dismissSplash = dismissSplash;
     window.goToHome = goToHome;
     window.goToAuth = goToAuth;
