@@ -13,13 +13,13 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  
-  <!-- Pre-compiled Tailwind CSS + Custom Orange Theme Rules -->
+  <!-- Pre-compiled Tailwind CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 
   <!-- QRious Engine (QR Generator) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
-  <!-- html2canvas for instant PVC ID Card PNG export -->
+  <!-- html2canvas for Official Paper PNG export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Firebase App & Services (Compat SDK) -->
@@ -31,13 +31,14 @@
     * {
       box-sizing: border-box;
     }
-    body {
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       margin: 0;
       padding: 0;
       background-color: #f8fafc;
       color: #0f172a;
+      overflow-x: hidden;
     }
     .hidden {
       display: none !important;
@@ -47,7 +48,7 @@
       backdrop-filter: blur(6px);
     }
 
-    /* Vibrant Orange Gradients & Colors (Works Offline & Online) */
+    /* Vibrant Orange Gradients & Colors */
     .brand-gradient {
       background: linear-gradient(135deg, #ff6b00 0%, #f97316 50%, #f59e0b 100%) !important;
     }
@@ -66,51 +67,53 @@
       border-color: #fed7aa !important;
     }
 
-    /* Animated Orange Button */
-    .btn-orange-animated {
-      background: linear-gradient(270deg, #ea580c, #f97316, #fbbf24, #f97316);
-      background-size: 300% 300%;
-      color: #ffffff !important;
-      animation: gradient-shift 4s ease infinite;
-      box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn-orange-animated:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 24px -5px rgba(249, 115, 22, 0.55);
-    }
-    .btn-orange-animated:active {
-      transform: scale(0.97);
-    }
-
-    /* Login Page Orange Animations */
-    @keyframes gradient-shift {
+    /* Smooth Orange Shimmer Animation (Steady, No Shaking) */
+    @keyframes orange-shimmer {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    @keyframes float-slow {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(6deg); }
+    @keyframes pulse-orange-glow {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6); }
+      70% { box-shadow: 0 0 0 14px rgba(255, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
     }
-    @keyframes pulse-orange-ring {
-      0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6); }
-      70% { box-shadow: 0 0 0 18px rgba(249, 115, 22, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+    @keyframes paper-unfold {
+      0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    @keyframes blob-bounce {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(15px, -15px) scale(1.08); }
+    @keyframes border-glow-pulse {
+      0%, 100% { border-color: #fdba74; box-shadow: 0 12px 35px -8px rgba(249, 115, 22, 0.25); }
+      50% { border-color: #f97316; box-shadow: 0 16px 45px -5px rgba(249, 115, 22, 0.45); }
     }
-    .animate-float {
-      animation: float-slow 3s ease-in-out infinite;
+
+    .animate-orange-banner {
+      background: linear-gradient(270deg, #ea580c, #f97316, #f59e0b, #ea580c);
+      background-size: 300% 300%;
+      animation: orange-shimmer 5s ease infinite;
     }
-    .animate-orange-ring {
-      animation: pulse-orange-ring 2s infinite;
+    .btn-orange-animated {
+      background: linear-gradient(270deg, #ea580c, #f97316, #fbbf24, #f97316);
+      background-size: 300% 300%;
+      color: #ffffff !important;
+      animation: orange-shimmer 4s ease infinite;
+      box-shadow: 0 8px 18px -4px rgba(249, 115, 22, 0.45);
+      transition: opacity 0.2s ease;
     }
-    .animate-blob {
-      animation: blob-bounce 6s infinite ease-in-out;
+    .btn-orange-animated:hover {
+      opacity: 0.94;
     }
+    .animate-logo-glow {
+      animation: pulse-orange-glow 2.2s infinite;
+    }
+    .animated-paper-sheet {
+      animation: paper-unfold 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards, border-glow-pulse 3s infinite ease-in-out;
+      border: 3px solid #fdba74;
+      background-image: radial-gradient(#fff7ed 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-color: #ffffff;
+    }
+
     .login-card-glow {
       box-shadow: 0 20px 50px -12px rgba(249, 115, 22, 0.28);
       border: 2px solid #ffedd5;
@@ -120,25 +123,16 @@
     }
     .rounded-2xl { border-radius: 1rem !important; }
     .rounded-3xl { border-radius: 1.5rem !important; }
-
-    @keyframes pulse-fast {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.85; transform: scale(1.02); }
-    }
-    .animate-pulse-fast {
-      animation: pulse-fast 1.8s infinite ease-in-out;
-    }
   </style>
 </head>
 <body class="min-h-screen antialiased flex flex-col">
 
   <!-- ======================================================== -->
-  <!-- 1. SPLASH SCREEN (ANIMATED ORANGE DOG WORLD)             -->
+  <!-- 1. SPLASH SCREEN                                         -->
   <!-- ======================================================== -->
-  <div id="splash-screen" class="fixed inset-0 z-50 brand-gradient flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
+  <div id="splash-screen" class="fixed inset-0 z-50 animate-orange-banner flex flex-col items-center justify-center text-white px-4 transition-opacity duration-700">
     <div class="relative flex flex-col items-center text-center">
-      <!-- Original Dog Logo -->
-      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white bg-opacity-20 rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-bounce border border-white border-opacity-30">
+      <div class="w-24 h-24 sm:w-28 sm:h-28 bg-white bg-opacity-20 rounded-3xl shadow-2xl flex items-center justify-center text-5xl sm:text-6xl text-white mb-6 animate-logo-glow border border-white border-opacity-30">
         <i class="fa-solid fa-dog"></i>
       </div>
 
@@ -170,12 +164,11 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- 3. TOP NAVBAR (WITH ORIGINAL DOG LOGO)                   -->
+  <!-- 3. TOP NAVBAR                                            -->
   <!-- ======================================================== -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="goToHome()">
-        <!-- Original Orange Dog Logo -->
         <div class="w-11 h-11 rounded-2xl dog-logo-box flex items-center justify-center text-xl">
           <i class="fa-solid fa-dog"></i>
         </div>
@@ -196,25 +189,13 @@
   <!-- ======================================================== -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
-    <!-- VIEW A: AUTHENTICATION (WITH ORANGE ANIMATION) -->
-    <div id="view-auth" class="hidden max-w-md mx-auto my-6 relative">
-     
-      <!-- Animated Orange Background Blobs -->
-      <div class="absolute -top-6 -left-6 w-32 h-32 rounded-full brand-gradient opacity-20 blur-xl animate-blob pointer-events-none"></div>
-      <div class="absolute -bottom-6 -right-6 w-36 h-36 rounded-full brand-gradient opacity-20 blur-xl animate-blob pointer-events-none"></div>
-
-      <div class="bg-white rounded-3xl login-card-glow overflow-hidden relative z-10">
+    <!-- VIEW A: AUTHENTICATION -->
+    <div id="view-auth" class="hidden max-w-md mx-auto my-6">
+      <div class="bg-white rounded-3xl login-card-glow overflow-hidden">
        
-        <!-- Animated Orange Banner Header -->
-        <div class="brand-gradient p-6 text-white text-center relative overflow-hidden">
-          <!-- Floating Animated Paws in Background -->
-          <i class="fa-solid fa-paw text-white opacity-10 text-4xl absolute top-2 left-4 animate-float"></i>
-          <i class="fa-solid fa-bone text-white opacity-10 text-3xl absolute bottom-2 right-6 animate-float"></i>
-          <i class="fa-solid fa-paw text-white opacity-10 text-2xl absolute top-4 right-12 animate-ping"></i>
-
-          <!-- Center Animated Dog Emblem -->
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-white text-orange-brand flex items-center justify-center text-3xl shadow-lg animate-orange-ring mb-3">
-            <i class="fa-solid fa-dog animate-bounce"></i>
+        <div class="animate-orange-banner p-6 text-white text-center relative overflow-hidden">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-white text-orange-brand flex items-center justify-center text-3xl shadow-lg animate-logo-glow mb-3">
+            <i class="fa-solid fa-dog"></i>
           </div>
           <h2 class="text-2xl font-black tracking-tight">DOG WORLD</h2>
           <p class="text-xs text-yellow-100 font-semibold mt-0.5">Official Digital Canine Portal</p>
@@ -302,7 +283,7 @@
       </div>
     </div>
 
-    <!-- VIEW B: KENNEL DASHBOARD (HOME PAGE) -->
+    <!-- VIEW B: KENNEL DASHBOARD (MAX 5 DOGS) -->
     <div id="view-dashboard" class="hidden space-y-6">
      
       <div class="bg-gray-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
@@ -314,14 +295,14 @@
             </div>
             <h2 class="text-2xl sm:text-3xl font-black">Your Registered Kennel</h2>
             <p class="text-xs sm:text-sm text-gray-300 mt-1 font-medium">
-              You can register up to 10 dogs in your cloud kennel account
+              You can register a maximum of 5 dogs in your cloud kennel account
             </p>
           </div>
 
           <div class="flex items-center space-x-4 bg-white bg-opacity-10 px-5 py-3 rounded-2xl border border-white border-opacity-10">
             <div class="text-right">
               <div class="text-xs uppercase font-bold tracking-wider text-gray-300">Kennel Capacity</div>
-              <div id="dash-count-pill" class="text-xl sm:text-2xl font-black text-yellow-300">0 / 10</div>
+              <div id="dash-count-pill" class="text-xl sm:text-2xl font-black text-yellow-300">0 / 5</div>
             </div>
             <div class="w-12 h-12 rounded-xl dog-logo-box flex items-center justify-center text-xl">
               <i class="fa-solid fa-paw"></i>
@@ -340,11 +321,11 @@
 
     </div>
 
-    <!-- VIEW C: ADD / EDIT PET FORM (NO PHOTO UPLOAD, CAPITAL LETTERS) -->
+    <!-- VIEW C: ADD / EDIT PET FORM -->
     <div id="view-add-pet" class="hidden max-w-2xl mx-auto">
       <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
        
-        <div class="brand-gradient p-6 text-white flex items-center justify-between">
+        <div class="animate-orange-banner p-6 text-white flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-11 h-11 rounded-2xl bg-white bg-opacity-20 flex items-center justify-center text-2xl">
               <i class="fa-solid fa-dog"></i>
@@ -449,7 +430,7 @@
             </div>
           </div>
 
-          <!-- SECTION 4: VACCINATION DETAILS -->
+          <!-- SECTION 4: VACCINATION DETAILS (EMPTY DATE BY DEFAULT) -->
           <div id="section-vaccine" class="p-4 rounded-2xl bg-green-50 border border-green-200 space-y-3">
             <div class="flex items-center space-x-2 text-green-900 font-bold text-xs uppercase tracking-wider">
               <i class="fa-solid fa-syringe text-green-600"></i>
@@ -484,7 +465,7 @@
               </div>
             </div>
             <p class="text-xs text-green-700 italic">
-              * Selecting Rabies or DHPPi automatically sets the next booster due date to 1 year later.
+              * Select the vaccination date above to automatically calculate the 1-year next booster due date.
             </p>
           </div>
 
@@ -507,18 +488,21 @@
   </main>
 
   <!-- ======================================================== -->
-  <!-- 5. MODAL: FULL CANINE PASSPORT VIEW                     -->
+  <!-- 5. MODAL: FULL CANINE PASSPORT (SHOWS LAST 2 VACCINES)  -->
   <!-- ======================================================== -->
   <div id="modal-details" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
     <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto">
      
-      <div class="relative h-36 brand-gradient flex items-center px-6">
+      <div class="relative h-36 animate-orange-banner flex items-center px-6">
         <div class="w-20 h-20 rounded-2xl bg-white bg-opacity-20 border border-white border-opacity-40 flex items-center justify-center text-4xl text-white shadow-lg mr-4">
           <i class="fa-solid fa-dog"></i>
         </div>
         <div class="text-white">
           <h3 id="detail-name" class="text-2xl font-black uppercase"></h3>
-          <span id="detail-gender-badge" class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-extrabold bg-white bg-opacity-20"></span>
+          <div class="flex items-center space-x-2 mt-1">
+            <span id="detail-gender-badge" class="px-3 py-0.5 rounded-full text-xs font-extrabold bg-white bg-opacity-20"></span>
+            <span id="detail-age-badge" class="px-3 py-0.5 rounded-full text-xs font-extrabold bg-yellow-300 text-yellow-900"></span>
+          </div>
         </div>
         <button onclick="closeDetailsModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black bg-opacity-30 text-white flex items-center justify-center hover:bg-opacity-50 transition">
           <i class="fa-solid fa-xmark text-sm"></i>
@@ -528,8 +512,9 @@
       <div class="p-6 space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3 bg-gray-50 p-3.5 rounded-2xl border border-gray-200">
           <div>
-            <span class="text-gray-400 block font-bold uppercase text-xs">DOB</span>
-            <strong id="detail-dob" class="text-gray-800 text-sm"></strong>
+            <span class="text-gray-400 block font-bold uppercase text-xs">DOB &amp; Age</span>
+            <strong id="detail-dob" class="text-gray-800 text-sm block"></strong>
+            <span id="detail-age-text" class="text-orange-brand font-extrabold text-xs"></span>
           </div>
           <div>
             <span class="text-gray-400 block font-bold uppercase text-xs">Dog ID</span>
@@ -564,16 +549,13 @@
           </div>
         </div>
 
-        <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-3.5">
-          <div class="font-bold text-yellow-900 mb-1 flex items-center justify-between">
-            <span>Latest Vaccine Status</span>
+        <!-- Last 2 Vaccines Section in Passport -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-3.5 space-y-2">
+          <div class="font-bold text-yellow-900 flex items-center justify-between">
+            <span>Last 2 Vaccination Records</span>
             <i class="fa-solid fa-syringe text-yellow-600"></i>
           </div>
-          <div class="text-xs text-yellow-800 space-y-1">
-            <div>Vaccine Name: <strong id="detail-latest-vac"></strong></div>
-            <div>Date Given: <strong id="detail-given-date"></strong></div>
-            <div>Next Due: <strong id="detail-next-date"></strong></div>
-          </div>
+          <div id="detail-last-two-vaccines" class="space-y-2"></div>
         </div>
 
         <button onclick="closeDetailsModal()" class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition">
@@ -585,7 +567,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- 6. MODAL: VACCINE RECORDS & ADD DOSE                    -->
+  <!-- 6. MODAL: VACCINE RECORDS (MAX 7, AUTO DELETE OLDEST)   -->
   <!-- ======================================================== -->
   <div id="modal-vaccines" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
     <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-lg w-full max-h-screen overflow-y-auto flex flex-col">
@@ -595,7 +577,7 @@
           <i class="fa-solid fa-syringe text-xl"></i>
           <div>
             <h3 id="vac-modal-title" class="text-base font-black">Vaccine History</h3>
-            <span class="text-xs text-green-100 uppercase tracking-widest font-bold">Dose Management</span>
+            <span class="text-xs text-green-100 uppercase tracking-widest font-bold">Max 7 Records Stored (Auto-Clean)</span>
           </div>
         </div>
         <button onclick="closeVaccineModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
@@ -605,7 +587,10 @@
 
       <div class="p-5 space-y-5 flex-1 overflow-y-auto">
         <div class="space-y-2">
-          <span class="text-xs font-bold uppercase text-gray-400">Vaccine Dose History</span>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-gray-400">Recorded Doses (Latest 7)</span>
+            <span id="vac-count-badge" class="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">0 / 7</span>
+          </div>
           <div id="vac-history-list" class="space-y-2 text-xs"></div>
         </div>
 
@@ -634,6 +619,9 @@
               <input type="date" id="dose-vac-next" required class="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-xl font-bold text-green-800">
             </div>
           </div>
+          <p class="text-xs text-gray-400 italic">
+            * Adding more than 7 records will automatically delete the oldest record from the cloud server.
+          </p>
 
           <button type="submit" id="btn-save-dose" class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition">
             Save Dose to Record
@@ -651,187 +639,154 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- 7. MODAL: PVC DOG ID CARD (100% ENGLISH + DOG EMBLEM)   -->
+  <!-- 7. MODAL: ANIMATED SHARE PAPER (DOG & OWNER DOCUMENT)   -->
   <!-- ======================================================== -->
-  <div id="modal-idcard" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop">
-    <div class="bg-white rounded-3xl shadow-2xl border border-yellow-100 max-w-xl w-full max-h-screen overflow-y-auto flex flex-col">
+  <div id="modal-share-paper" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop">
+    <div class="bg-white rounded-3xl shadow-2xl border border-orange-soft max-w-lg w-full max-h-screen overflow-y-auto flex flex-col">
      
-      <div class="brand-gradient p-4 text-white sticky top-0 z-20 flex items-center justify-between shadow-sm">
+      <!-- Modal Top Header -->
+      <div class="animate-orange-banner p-4 text-white sticky top-0 z-20 flex items-center justify-between">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 rounded-xl bg-white bg-opacity-20 flex items-center justify-center text-sm shadow-inner">
-            <i class="fa-solid fa-id-card"></i>
+          <div class="w-8 h-8 rounded-xl bg-white bg-opacity-20 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-file-signature"></i>
           </div>
           <div>
-            <h3 class="text-sm sm:text-base font-black">Canine PVC Identity Card</h3>
-            <span class="text-xs uppercase font-bold text-yellow-100">Ready to Print &amp; Save</span>
+            <h3 class="text-sm sm:text-base font-black">Official Canine Information Sheet</h3>
+            <span class="text-xs uppercase font-bold text-yellow-100">Animated Shareable Document</span>
           </div>
         </div>
-        <button onclick="closeIdCardModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
+        <button onclick="closeSharePaperModal()" class="w-8 h-8 rounded-full bg-black bg-opacity-20 hover:bg-opacity-40 text-white flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-xs"></i>
         </button>
       </div>
 
-      <!-- Tab Switch: Front / Back -->
-      <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between">
-        <div class="flex space-x-1.5 text-xs font-bold">
-          <button id="pvc-tab-front" onclick="switchPvcTab('front')" class="px-3 py-1 rounded-lg dog-logo-box shadow-sm">Front Side</button>
-          <button id="pvc-tab-back" onclick="switchPvcTab('back')" class="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">Back Side</button>
-        </div>
-        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Official Canine ID</span>
-      </div>
-
-      <!-- Card Face Container -->
-      <div class="p-4 sm:p-6 bg-gray-200 overflow-x-auto flex-1 flex justify-center items-center">
-        <div id="pvc-export-container" class="w-full max-w-md">
-
-          <!-- FRONT CARD FACE -->
-          <div id="pvc-front-view" class="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
-            <div class="pt-3 px-4 flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-xl dog-logo-box flex items-center justify-center text-sm">
-                  <i class="fa-solid fa-dog"></i>
-                </div>
-                <div>
-                  <div class="text-xs font-black uppercase text-gray-900 tracking-tight leading-none">DOG WORLD</div>
-                  <div class="text-xs uppercase font-bold text-gray-500 tracking-widest leading-none mt-0.5">Canine Registry</div>
-                </div>
+      <!-- Animated Paper Document Area -->
+      <div class="p-4 sm:p-6 bg-gray-100 flex-1 flex justify-center items-center overflow-x-auto">
+        <div id="paper-export-sheet" class="w-full max-w-md animated-paper-sheet rounded-2xl p-6 text-gray-900 relative overflow-hidden">
+         
+          <!-- Top Letterhead -->
+          <div class="flex items-center justify-between border-b-2 border-orange-soft pb-4">
+            <div class="flex items-center space-x-3">
+              <div class="w-12 h-12 rounded-2xl dog-logo-box flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-dog"></i>
               </div>
-              <div class="text-yellow-500 text-base">
-                <i class="fa-solid fa-shield-dog"></i>
+              <div>
+                <h4 class="text-lg font-black tracking-tight text-gray-900 leading-none">DOG <span class="text-orange-brand">WORLD</span></h4>
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Official Canine Registry</span>
               </div>
             </div>
-
-            <!-- Top Stripe -->
-            <div class="mt-2.5 h-1.5 w-full flex">
-              <div class="h-full w-1/2 bg-yellow-500"></div>
-              <div class="h-full w-1/2 bg-green-600"></div>
-            </div>
-
-            <div class="p-4 flex gap-4 items-center">
-              <!-- Official Dog World Emblem Badge (Replaces Photo Upload) -->
-              <div class="w-24 flex-shrink-0 flex flex-col items-center">
-                <div class="w-24 h-28 rounded-2xl dog-logo-box flex flex-col items-center justify-center shadow-md border-2 border-yellow-200">
-                  <i class="fa-solid fa-dog text-4xl text-white mb-1"></i>
-                  <span class="text-xs font-black tracking-widest uppercase text-yellow-100">DOG WORLD</span>
-                </div>
-                <div class="mt-1.5 w-full py-0.5 px-1 bg-yellow-300 text-yellow-900 text-xs font-black rounded flex items-center justify-center space-x-1 border border-yellow-500">
-                  <i class="fa-solid fa-circle-check text-xs"></i>
-                  <span>VERIFIED</span>
-                </div>
-              </div>
-
-              <!-- English Details (CAPITAL LETTERS FOR NAME, FATHER, MOTHER) -->
-              <div class="flex-1 space-y-1.5 text-xs leading-tight">
-                <div>
-                  <span class="text-xs text-gray-400 block font-bold uppercase">Dog Name:</span>
-                  <span id="card-front-name" class="font-black text-base text-gray-900 block uppercase truncate"></span>
-                </div>
-                <div class="flex">
-                  <span class="w-20 text-gray-500 font-semibold">DOB:</span>
-                  <strong id="card-front-dob" class="text-gray-800"></strong>
-                </div>
-                <div class="flex">
-                  <span class="w-20 text-gray-500 font-semibold">Father:</span>
-                  <strong id="card-front-father" class="text-gray-900 font-black uppercase truncate"></strong>
-                </div>
-                <div class="flex">
-                  <span class="w-20 text-gray-500 font-semibold">Mother:</span>
-                  <strong id="card-front-mother" class="text-gray-900 font-black uppercase truncate"></strong>
-                </div>
-                <div class="flex">
-                  <span class="w-20 text-gray-500 font-semibold">Owner:</span>
-                  <strong id="card-front-owner" class="text-gray-800 truncate"></strong>
-                </div>
-                <div class="flex">
-                  <span class="w-20 text-gray-500 font-semibold">Gender:</span>
-                  <strong id="card-front-gender" class="text-gray-800 uppercase"></strong>
-                </div>
-              </div>
-            </div>
-
-            <!-- Registry Serial -->
-            <div class="pt-1 pb-1.5 text-center bg-gray-50 border-t border-gray-100">
-              <div id="card-front-serial" class="text-base sm:text-lg font-black font-mono tracking-widest text-red-700"></div>
-              <div id="card-front-subid" class="text-xs uppercase font-bold text-gray-400"></div>
-            </div>
-
-            <div class="bg-red-700 text-white py-1.5 px-3 text-center text-xs font-bold uppercase tracking-wider">
-              MY DOG, MY FAMILY — OFFICIAL CANINE REGISTRY
+            <div class="text-right">
+              <span class="px-2.5 py-1 rounded-full text-xs font-black bg-yellow-300 text-yellow-900 uppercase">Verified Record</span>
+              <span id="paper-doc-id" class="block text-xs font-mono font-bold text-gray-400 mt-1"></span>
             </div>
           </div>
 
-          <!-- BACK CARD FACE -->
-          <div id="pvc-back-view" class="hidden bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden text-gray-900 select-none font-sans relative">
-            <div class="bg-gray-100 px-4 py-1.5 flex items-center justify-between text-xs font-bold uppercase text-gray-500 border-b border-gray-200">
-              <span>BACK SIDE</span>
-              <span class="bg-white px-2 py-0.5 rounded border border-gray-200">ADDRESS &amp; QR</span>
+          <!-- Section 1: Canine Profile -->
+          <div class="mt-4 bg-orange-soft p-4 rounded-2xl border border-orange-soft">
+            <div class="text-xs font-black uppercase tracking-wider text-orange-brand mb-2 flex items-center space-x-1.5">
+              <i class="fa-solid fa-paw"></i>
+              <span>Canine Details</span>
             </div>
-
-            <div class="h-1.5 w-full flex">
-              <div class="h-full w-1/2 bg-yellow-500"></div>
-              <div class="h-full w-1/2 bg-green-600"></div>
-            </div>
-
-            <div class="p-4 flex gap-3 items-start">
-              <div class="flex-1 space-y-2 text-xs leading-relaxed">
-                <div>
-                  <strong class="text-gray-900 block font-bold uppercase text-xs">Registered Address:</strong>
-                  <div class="text-gray-600 mt-0.5">
-                    C/O: <strong id="card-back-owner-en" class="text-gray-900"></strong><br>
-                    <span id="card-back-addr-en" class="break-words"></span>
-                  </div>
-                </div>
-
-                <div class="border-t border-gray-100 pt-1.5">
-                  <div class="text-gray-600 text-xs">
-                    Emergency Phone: <strong id="card-back-phone-en" class="text-gray-900 font-bold"></strong><br>
-                    Latest Vaccine: <strong id="card-back-vac-en" class="text-green-700 font-bold"></strong>
-                  </div>
-                </div>
+            <div class="grid grid-cols-2 gap-y-2 gap-x-3 text-xs">
+              <div class="col-span-2">
+                <span class="text-gray-400 font-bold uppercase block text-xs">Dog Name:</span>
+                <strong id="paper-dog-name" class="text-base font-black text-gray-900 uppercase"></strong>
               </div>
-
-              <!-- Scannable QR -->
-              <div class="w-28 flex-shrink-0 flex flex-col items-center justify-center">
-                <div class="p-1.5 bg-white rounded-xl border border-gray-300 flex flex-col items-center">
-                  <canvas id="card-qr-canvas" width="110" height="110" class="w-24 h-24"></canvas>
-                </div>
-                <span class="text-xs text-center text-gray-500 font-bold mt-1 leading-none">
-                  Scan to Verify
-                </span>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Date of Birth:</span>
+                <strong id="paper-dog-dob" class="text-gray-800"></strong>
+              </div>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Current Age:</span>
+                <strong id="paper-dog-age" class="text-orange-brand font-black"></strong>
+              </div>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Gender:</span>
+                <strong id="paper-dog-gender" class="text-gray-800 uppercase"></strong>
+              </div>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Lineage Status:</span>
+                <strong id="paper-dog-status" class="text-gray-800 uppercase"></strong>
+              </div>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Father Name:</span>
+                <strong id="paper-dog-father" class="text-gray-900 font-black uppercase truncate block"></strong>
+              </div>
+              <div>
+                <span class="text-gray-400 font-bold uppercase block text-xs">Mother Name:</span>
+                <strong id="paper-dog-mother" class="text-gray-900 font-black uppercase truncate block"></strong>
               </div>
             </div>
+          </div>
 
-            <div class="pt-1 pb-1 text-center bg-gray-50 border-t border-gray-100">
-              <div id="card-back-serial" class="text-sm sm:text-base font-black font-mono tracking-widest text-red-700"></div>
-              <div class="text-xs text-gray-500 font-medium flex items-center justify-center space-x-3">
-                <span id="card-back-subid"></span>
-                <span>VALIDITY: <strong>LIFETIME</strong></span>
+          <!-- Section 2: Owner & Contact Details -->
+          <div class="mt-3 bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <div class="text-xs font-black uppercase tracking-wider text-gray-700 mb-2 flex items-center space-x-1.5">
+              <i class="fa-solid fa-user-shield text-orange-brand"></i>
+              <span>Owner &amp; Address Details</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-gray-500 font-semibold">Owner Name:</span>
+                <strong id="paper-owner-name" class="text-gray-900"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500 font-semibold">Contact Number:</span>
+                <strong id="paper-owner-phone" class="text-gray-900 font-bold"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500 font-semibold">Email ID:</span>
+                <strong id="paper-owner-email" class="text-gray-800"></strong>
+              </div>
+              <div class="pt-1 border-t border-gray-200">
+                <span class="text-gray-500 font-semibold block">Registered Address:</span>
+                <p id="paper-owner-address" class="text-gray-800 font-medium mt-0.5 break-words"></p>
               </div>
             </div>
+          </div>
 
-            <div class="bg-gray-900 text-white py-1.5 px-3 text-center text-xs font-medium truncate">
-              If found, please contact: <strong id="card-back-helpline" class="text-yellow-300"></strong>
+          <!-- Section 3: Vaccination Summary + QR -->
+          <div class="mt-3 flex items-center justify-between bg-green-50 p-3.5 rounded-2xl border border-green-200 gap-3">
+            <div class="text-xs space-y-1 flex-1">
+              <div class="font-black text-green-900 uppercase flex items-center space-x-1">
+                <i class="fa-solid fa-syringe text-green-600"></i>
+                <span>Vaccination Status</span>
+              </div>
+              <div class="text-green-800">Vaccine: <strong id="paper-vac-name"></strong></div>
+              <div class="text-green-800">Given: <strong id="paper-vac-date"></strong></div>
+              <div class="text-green-900">Next Due: <strong id="paper-vac-next" class="underline"></strong></div>
             </div>
+            <div class="p-1.5 bg-white rounded-xl border border-green-300 flex flex-col items-center">
+              <canvas id="paper-qr-canvas" width="75" height="75" class="w-16 h-16"></canvas>
+              <span class="text-xs text-gray-400 font-bold mt-0.5">Scan Info</span>
+            </div>
+          </div>
+
+          <!-- Footer Stamp -->
+          <div class="mt-4 pt-3 border-t border-gray-200 flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
+            <span>DOG WORLD DIGITAL RECORD</span>
+            <span class="text-orange-brand"><i class="fa-solid fa-certificate mr-1"></i>AUTHENTIC</span>
           </div>
 
         </div>
       </div>
 
+      <!-- Bottom Share Actions -->
       <div class="p-4 bg-white border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span class="text-xs text-gray-500 font-medium text-center sm:text-left">
-          <i class="fa-solid fa-circle-check text-green-500 mr-1"></i>
-          High-resolution image ready for PVC card printing
+        <span class="text-xs text-gray-500 font-medium">
+          <i class="fa-solid fa-share-nodes text-orange-brand mr-1"></i>
+          Share this official record sheet anywhere
         </span>
 
         <div class="flex items-center space-x-2 w-full sm:w-auto">
-          <button onclick="shareIdCardWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm">
+          <button onclick="sharePaperWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm">
             <i class="fa-brands fa-whatsapp text-sm"></i>
-            <span>WhatsApp</span>
+            <span>WhatsApp Share</span>
           </button>
 
-          <button id="btn-download-png" onclick="downloadIdCardImage()" class="flex-1 sm:flex-none px-5 py-2.5 btn-orange-animated font-black text-xs rounded-xl flex items-center justify-center space-x-1.5">
+          <button id="btn-download-paper" onclick="downloadPaperSheetImage()" class="flex-1 sm:flex-none px-5 py-2.5 btn-orange-animated font-black text-xs rounded-xl flex items-center justify-center space-x-1.5">
             <i class="fa-solid fa-download"></i>
-            <span>Download (PNG)</span>
+            <span>Save Paper (PNG)</span>
           </button>
         </div>
       </div>
@@ -840,7 +795,28 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- 8. FOOTER                                                -->
+  <!-- 8. MODAL: E-PVC COMING SOON                             -->
+  <!-- ======================================================== -->
+  <div id="modal-coming-soon" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-orange-soft max-w-sm w-full p-6 text-center space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-2xl dog-logo-box flex items-center justify-center text-3xl">
+        <i class="fa-solid fa-id-card"></i>
+      </div>
+      <div>
+        <span class="px-3 py-1 rounded-full text-xs font-black bg-yellow-300 text-yellow-900 uppercase tracking-wider">E-PVC Service</span>
+        <h3 class="text-2xl font-black text-gray-900 mt-2">Coming Soon!</h3>
+        <p class="text-xs text-gray-500 mt-1">
+          Smart E-PVC Card ordering and instant print export feature will be available soon.
+        </p>
+      </div>
+      <button onclick="closeComingSoonModal()" class="w-full py-2.5 btn-orange-animated font-extrabold text-xs rounded-xl uppercase tracking-wider">
+        Okay, Got It
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 9. FOOTER                                                -->
   <!-- ======================================================== -->
   <footer class="bg-white border-t border-gray-200 py-4 mt-auto">
     <div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400 font-medium">
@@ -849,7 +825,7 @@
   </footer>
 
   <!-- ======================================================== -->
-  <!-- 9. JAVASCRIPT LOGIC (FIREBASE + CAPITAL LETTERS)         -->
+  <!-- 10. JAVASCRIPT LOGIC                                     -->
   <!-- ======================================================== -->
   <script>
     const firebaseConfig = {
@@ -868,12 +844,52 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    const MAX_DOGS_LIMIT = 5;
+    const MAX_VACCINE_HISTORY = 7;
+
     let currentUser = null;
     let registeredDogs = [];
-    let activeCardDog = null;
-    let currentPvcTab = "front";
+    let activeShareDog = null;
     let activeVaccineDog = null;
     let editingDogId = null;
+
+    // Helper: Calculate Exact Dog Age from DOB to Today
+    function calculateDogAge(dobStr) {
+      if (!dobStr) return "N/A";
+      const parts = dobStr.split("-");
+      if (parts.length !== 3) return "N/A";
+
+      const dob = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      let days = today.getDate() - dob.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      if (years < 0) return "Newborn";
+
+      const resultParts = [];
+      if (years > 0) resultParts.push(`${years} Yr${years > 1 ? "s" : ""}`);
+      if (months > 0) resultParts.push(`${months} Mo${months > 1 ? "s" : ""}`);
+      if (years === 0 && months === 0) {
+        resultParts.push(`${days} Day${days !== 1 ? "s" : ""}`);
+      } else if (years === 0 && days > 0) {
+        resultParts.push(`${days}d`);
+      }
+
+      return resultParts.join(" ");
+    }
 
     function calculateNextYearDate(dateString) {
       if (!dateString) return "";
@@ -1090,8 +1106,8 @@
     function goToAddPetView() {
       if (!currentUser) return goToAuth();
 
-      if (registeredDogs.length >= 10) {
-        showToast("Maximum kennel limit reached (10 dogs).", "error");
+      if (registeredDogs.length >= MAX_DOGS_LIMIT) {
+        showToast(`Maximum kennel limit reached (${MAX_DOGS_LIMIT} dogs).`, "error");
         return;
       }
 
@@ -1111,9 +1127,8 @@
       document.getElementById("dog-owner").value = currentUser.name || "";
       document.getElementById("dog-gmail").value = currentUser.email || "";
 
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("dog-vaccine-date").value = today;
-      autoCalculateNextVaccineDate();
+      document.getElementById("dog-vaccine-date").value = "";
+      document.getElementById("dog-vaccine-next-date").value = "";
     }
 
     function openEditPetView(dogId) {
@@ -1151,8 +1166,8 @@
       } else {
         document.getElementById("dog-vaccine-custom").classList.add("hidden");
       }
-      document.getElementById("dog-vaccine-date").value = dog.vaccineDate;
-      document.getElementById("dog-vaccine-next-date").value = dog.vaccineNextDate;
+      document.getElementById("dog-vaccine-date").value = dog.vaccineDate || "";
+      document.getElementById("dog-vaccine-next-date").value = dog.vaccineNextDate || "";
     }
 
     async function loadDogsFromFirebase() {
@@ -1199,7 +1214,7 @@
       const addAnotherWrap = document.getElementById("add-another-wrap");
 
       ownerGreeting.textContent = `Welcome, ${currentUser ? currentUser.name : "Dog Owner"}`;
-      countPill.textContent = `${registeredDogs.length} / 10`;
+      countPill.textContent = `${registeredDogs.length} / ${MAX_DOGS_LIMIT}`;
 
       if (registeredDogs.length === 0) {
         container.className = "block";
@@ -1211,7 +1226,7 @@
             <div>
               <h3 class="text-lg font-black text-gray-800">No Dogs Registered Yet</h3>
               <p class="text-xs text-gray-400 mt-1 max-w-sm mx-auto">
-                Register your pet's lineage and vaccination records securely in Dog World.
+                Register up to 5 pets with lineage and vaccination records securely in Dog World.
               </p>
             </div>
             <button onclick="goToAddPetView()" class="px-6 py-3 btn-orange-animated font-extrabold text-xs rounded-2xl inline-flex items-center space-x-2">
@@ -1231,6 +1246,7 @@
         const dogNameUpper = (dog.name || "").toUpperCase();
         const fatherUpper = (dog.father || "ADOPTED").toUpperCase();
         const motherUpper = (dog.mother || "ADOPTED").toUpperCase();
+        const dogAge = calculateDogAge(dog.dob);
 
         let warningBadge = "";
         let borderAlert = "border-gray-200";
@@ -1242,7 +1258,7 @@
             : `⚠️ VACCINE DUE IN ${vaccineWarning.daysRemaining} DAY(S)!`;
 
           warningBadge = `
-            <div class="bg-red-600 text-white text-xs font-black px-3 py-1 text-center animate-pulse-fast flex items-center justify-center space-x-1">
+            <div class="bg-red-600 text-white text-xs font-black px-3 py-1 text-center flex items-center justify-center space-x-1">
               <i class="fa-solid fa-triangle-exclamation"></i>
               <span>${alertText}</span>
             </div>
@@ -1253,8 +1269,7 @@
           <div class="bg-white rounded-3xl border ${borderAlert} shadow-lg overflow-hidden flex flex-col justify-between transition">
             ${warningBadge}
 
-            <!-- Card Header with Original Dog Logo -->
-            <div class="p-4 brand-gradient text-white flex items-center justify-between relative">
+            <div class="p-4 animate-orange-banner text-white flex items-center justify-between relative">
               <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-2xl bg-white bg-opacity-20 border border-white border-opacity-30 flex items-center justify-center text-2xl shadow-sm">
                   <i class="fa-solid fa-dog"></i>
@@ -1265,8 +1280,11 @@
                     <span class="px-2 py-0.5 rounded-full text-xs font-black bg-white bg-opacity-20 uppercase">
                       ${dog.gender}
                     </span>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-black bg-yellow-300 text-yellow-900">
+                      Age: ${dogAge}
+                    </span>
                     ${isAdopted ? `
-                      <span class="px-2 py-0.5 rounded-full text-xs font-black bg-yellow-400 text-yellow-900 uppercase">
+                      <span class="px-2 py-0.5 rounded-full text-xs font-black bg-white text-orange-brand uppercase">
                         Adopted
                       </span>
                     ` : ''}
@@ -1284,7 +1302,7 @@
                 <div class="flex items-center justify-between text-xs text-gray-500">
                   <span class="flex items-center space-x-1.5">
                     <i class="fa-solid fa-cake-candles text-orange-brand"></i>
-                    <span>DOB: <strong>${dog.dob}</strong></span>
+                    <span>DOB: <strong>${dog.dob}</strong> <span class="text-orange-brand font-bold">(${dogAge})</span></span>
                   </span>
                   <button onclick="openEditPetView('${dog.id}')" class="text-gray-400 hover:text-gray-800 font-bold flex items-center space-x-1 transition">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -1292,7 +1310,6 @@
                   </button>
                 </div>
 
-                <!-- Parents in CAPITAL LETTERS -->
                 <div class="mt-3 grid grid-cols-2 gap-2 text-xs bg-gray-50 p-2.5 rounded-xl border border-gray-100">
                   <div>
                     <span class="text-gray-400 block text-xs uppercase font-bold">Father</span>
@@ -1316,12 +1333,18 @@
                 </div>
               </div>
 
+              <!-- 2 Separate Buttons: (Share) and (E PVC) -->
               <div class="pt-3 border-t border-gray-100 space-y-2">
-                <button onclick="openIdCardModal('${dog.id}')" class="w-full py-2.5 px-4 btn-orange-animated font-extrabold text-xs rounded-xl flex items-center justify-center space-x-1.5">
-                  <i class="fa-solid fa-id-card"></i>
-                  <span>Share / PVC Card</span>
-                  <i class="fa-solid fa-download text-xs ml-1"></i>
-                </button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openSharePaperModal('${dog.id}')" class="py-2.5 px-3 btn-orange-animated font-extrabold text-xs rounded-xl flex items-center justify-center space-x-1.5">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Share</span>
+                  </button>
+                  <button onclick="handleEPvcClick()" class="py-2.5 px-3 bg-gray-900 hover:bg-gray-800 text-yellow-400 font-extrabold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>E PVC</span>
+                  </button>
+                </div>
 
                 <div class="flex items-center space-x-2">
                   <button onclick="openDetailsModal('${dog.id}')" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
@@ -1343,18 +1366,18 @@
         `;
       }).join("");
 
-      if (registeredDogs.length < 10) {
+      if (registeredDogs.length < MAX_DOGS_LIMIT) {
         addAnotherWrap.innerHTML = `
           <button onclick="goToAddPetView()" class="px-8 py-3.5 btn-orange-animated font-black text-xs sm:text-sm rounded-2xl flex items-center space-x-2">
             <i class="fa-solid fa-plus-circle text-base"></i>
-            <span>+ Add Another Dog (${registeredDogs.length}/10)</span>
+            <span>+ Add Another Dog (${registeredDogs.length}/${MAX_DOGS_LIMIT})</span>
           </button>
         `;
       } else {
         addAnotherWrap.innerHTML = `
           <div class="px-6 py-2.5 rounded-2xl bg-yellow-50 border border-yellow-300 text-yellow-900 font-bold text-xs flex items-center space-x-2">
             <i class="fa-solid fa-circle-check text-yellow-600"></i>
-            <span>Maximum kennel capacity reached (10 / 10 Dogs Registered).</span>
+            <span>Maximum kennel capacity reached (${MAX_DOGS_LIMIT} / ${MAX_DOGS_LIMIT} Dogs Registered).</span>
           </div>
         `;
       }
@@ -1400,7 +1423,10 @@
       const givenDateVal = document.getElementById("dog-vaccine-date").value;
       const nextDateInput = document.getElementById("dog-vaccine-next-date");
 
-      if (!givenDateVal) return;
+      if (!givenDateVal) {
+        nextDateInput.value = "";
+        return;
+      }
       if (vacType === "Rabies" || vacType === "DHPPi (7-in-1)") {
         nextDateInput.value = calculateNextYearDate(givenDateVal);
       }
@@ -1414,8 +1440,8 @@
         return;
       }
 
-      if (!editingDogId && registeredDogs.length >= 10) {
-        showToast("Maximum kennel capacity reached (10 dogs).", "error");
+      if (!editingDogId && registeredDogs.length >= MAX_DOGS_LIMIT) {
+        showToast(`Maximum kennel capacity reached (${MAX_DOGS_LIMIT} dogs).`, "error");
         return;
       }
 
@@ -1499,13 +1525,18 @@
       }
     }
 
+    // PASSPORT MODAL: Shows Age + Last 2 Vaccines
     function openDetailsModal(dogId) {
       const dog = registeredDogs.find(d => d.id === dogId);
       if (!dog) return;
 
+      const ageStr = calculateDogAge(dog.dob);
+
       document.getElementById("detail-name").textContent = (dog.name || "").toUpperCase();
       document.getElementById("detail-gender-badge").textContent = (dog.gender || "").toUpperCase();
+      document.getElementById("detail-age-badge").textContent = `Age: ${ageStr}`;
       document.getElementById("detail-dob").textContent = dog.dob;
+      document.getElementById("detail-age-text").textContent = `(${ageStr} old)`;
       document.getElementById("detail-id").textContent = dog.id.slice(-6).toUpperCase();
       document.getElementById("detail-father").textContent = (dog.father || "ADOPTED").toUpperCase();
       document.getElementById("detail-mother").textContent = (dog.mother || "ADOPTED").toUpperCase();
@@ -1514,9 +1545,25 @@
       document.getElementById("detail-gmail").textContent = dog.email;
       document.getElementById("detail-address").textContent = dog.address;
 
-      document.getElementById("detail-latest-vac").textContent = dog.vaccineName;
-      document.getElementById("detail-given-date").textContent = dog.vaccineDate;
-      document.getElementById("detail-next-date").textContent = dog.vaccineNextDate;
+      // Render Last 2 Vaccines
+      const historyList = (dog.vaccineHistory && dog.vaccineHistory.length > 0)
+        ? dog.vaccineHistory.slice(-2).reverse()
+        : [{ name: dog.vaccineName, dateGiven: dog.vaccineDate, nextDue: dog.vaccineNextDate }];
+
+      const vacContainer = document.getElementById("detail-last-two-vaccines");
+      vacContainer.innerHTML = historyList.map((v, i) => `
+        <div class="p-2.5 bg-white rounded-xl border border-yellow-300 flex items-center justify-between text-xs">
+          <div>
+            <span class="px-1.5 py-0.5 rounded bg-yellow-200 text-yellow-900 font-black text-xs mr-1">#${i + 1} ${i === 0 ? 'Latest' : 'Previous'}</span>
+            <strong class="text-gray-900">${v.name}</strong>
+            <div class="text-gray-500 mt-0.5">Given: <strong>${v.dateGiven}</strong></div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-gray-400 font-bold uppercase block">Next Due</span>
+            <strong class="text-green-700 font-black">${v.nextDue}</strong>
+          </div>
+        </div>
+      `).join("");
 
       document.getElementById("modal-details").classList.remove("hidden");
     }
@@ -1525,6 +1572,7 @@
       document.getElementById("modal-details").classList.add("hidden");
     }
 
+    // VACCINE HISTORY MODAL (MAX 7 ITEMS)
     function openVaccineModal(dogId) {
       const dog = registeredDogs.find(d => d.id === dogId);
       if (!dog) return;
@@ -1532,9 +1580,8 @@
       activeVaccineDog = dog;
       document.getElementById("vac-modal-title").textContent = `${(dog.name || "").toUpperCase()}'s Vaccine History`;
 
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("dose-vac-date").value = today;
-      calcDoseNextDate();
+      document.getElementById("dose-vac-date").value = "";
+      document.getElementById("dose-vac-next").value = "";
 
       renderVaccineHistoryList();
       document.getElementById("modal-vaccines").classList.remove("hidden");
@@ -1547,25 +1594,35 @@
 
     function calcDoseNextDate() {
       const dateGiven = document.getElementById("dose-vac-date").value;
-      if (!dateGiven) return;
-      document.getElementById("dose-vac-next").value = calculateNextYearDate(dateGiven);
+      const nextInput = document.getElementById("dose-vac-next");
+      if (!dateGiven) {
+        nextInput.value = "";
+        return;
+      }
+      nextInput.value = calculateNextYearDate(dateGiven);
     }
 
     function renderVaccineHistoryList() {
       if (!activeVaccineDog) return;
       const listEl = document.getElementById("vac-history-list");
+      const countBadge = document.getElementById("vac-count-badge");
       const history = activeVaccineDog.vaccineHistory || [];
+
+      countBadge.textContent = `${history.length} / ${MAX_VACCINE_HISTORY}`;
 
       if (history.length === 0) {
         listEl.innerHTML = `<div class="p-3 text-center text-gray-400 bg-gray-50 rounded-xl">No prior dose history.</div>`;
         return;
       }
 
-      listEl.innerHTML = history.slice().reverse().map(item => `
+      listEl.innerHTML = history.slice().reverse().map((item, idx) => `
         <div class="p-3 bg-white border border-gray-200 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
-            <strong class="text-gray-800 text-xs block">${item.name}</strong>
-            <span class="text-xs text-gray-500">Given on: <strong>${item.dateGiven}</strong></span>
+            <div class="flex items-center space-x-1.5">
+              <span class="px-1.5 py-0.5 bg-green-100 text-green-800 font-bold rounded text-xs">#${idx + 1}</span>
+              <strong class="text-gray-800 text-xs">${item.name}</strong>
+            </div>
+            <span class="text-xs text-gray-500 block mt-0.5">Given on: <strong>${item.dateGiven}</strong></span>
           </div>
           <div class="text-right">
             <span class="text-xs uppercase font-bold text-gray-400 block">Next Due</span>
@@ -1593,8 +1650,13 @@
         nextDue
       };
 
-      const updatedHistory = activeVaccineDog.vaccineHistory || [];
+      let updatedHistory = activeVaccineDog.vaccineHistory ? [...activeVaccineDog.vaccineHistory] : [];
       updatedHistory.push(newDose);
+
+      // Automatically keep only the latest 7 vaccines and delete older ones from server
+      if (updatedHistory.length > MAX_VACCINE_HISTORY) {
+        updatedHistory = updatedHistory.slice(-MAX_VACCINE_HISTORY);
+      }
 
       try {
         await db.collection("dogs").doc(activeVaccineDog.id).update({
@@ -1609,9 +1671,12 @@
         activeVaccineDog.vaccineDate = dateGiven;
         activeVaccineDog.vaccineNextDate = nextDue;
 
+        document.getElementById("dose-vac-date").value = "";
+        document.getElementById("dose-vac-next").value = "";
+
         await loadDogsFromFirebase();
         renderVaccineHistoryList();
-        showToast(`New dose logged for ${(activeVaccineDog.name || "").toUpperCase()}!`, "success");
+        showToast(`Dose saved! (Max ${MAX_VACCINE_HISTORY} records synced)`, "success");
       } catch (err) {
         showToast("Error updating dose: " + err.message, "error");
       } finally {
@@ -1619,100 +1684,73 @@
       }
     }
 
-    function generateSerial(dog, index = 1) {
-      const yPart = dog.dob ? dog.dob.substring(0, 4) : "2026";
-      const idNum = String(index).padStart(4, "0");
-      const shortId = String(index).padStart(2, "0");
-
-      return {
-        formatted: `DW &bull; ${yPart} &bull; ${idNum}`,
-        shortId: shortId
-      };
+    // E-PVC COMING SOON HANDLER
+    function handleEPvcClick() {
+      document.getElementById("modal-coming-soon").classList.remove("hidden");
+      showToast("E-PVC Card — Coming Soon!", "info");
     }
 
-    function drawCardQrCode(dog) {
-      const qrPayload = `DOG WORLD REGISTRY\nNAME: ${(dog.name || "").toUpperCase()}\nDOB: ${dog.dob}\nFATHER: ${(dog.father || "ADOPTED").toUpperCase()}\nMOTHER: ${(dog.mother || "ADOPTED").toUpperCase()}\nOWNER: ${dog.owner}\nMOBILE: +91 ${dog.mobile}`;
+    function closeComingSoonModal() {
+      document.getElementById("modal-coming-soon").classList.add("hidden");
+    }
+
+    // ANIMATED SHARE PAPER MODAL HANDLERS
+    function openSharePaperModal(dogId) {
+      const dogIdx = registeredDogs.findIndex(d => d.id === dogId);
+      const dog = registeredDogs[dogIdx];
+      if (!dog) return;
+
+      activeShareDog = dog;
+      const dogAge = calculateDogAge(dog.dob);
+      const docId = `DW-${dog.dob ? dog.dob.substring(0, 4) : "2026"}-0${dogIdx + 1}`;
+
+      document.getElementById("paper-doc-id").textContent = `DOC ID: ${docId}`;
+      document.getElementById("paper-dog-name").textContent = (dog.name || "").toUpperCase();
+      document.getElementById("paper-dog-dob").textContent = dog.dob;
+      document.getElementById("paper-dog-age").textContent = dogAge;
+      document.getElementById("paper-dog-gender").textContent = (dog.gender || "MALE").toUpperCase();
+      document.getElementById("paper-dog-status").textContent = dog.isAdopted ? "ADOPTED PET" : "HOMEBRED / LINEAGE";
+      document.getElementById("paper-dog-father").textContent = (dog.father || "ADOPTED").toUpperCase();
+      document.getElementById("paper-dog-mother").textContent = (dog.mother || "ADOPTED").toUpperCase();
+
+      document.getElementById("paper-owner-name").textContent = dog.owner;
+      document.getElementById("paper-owner-phone").textContent = "+91 " + dog.mobile;
+      document.getElementById("paper-owner-email").textContent = dog.email;
+      document.getElementById("paper-owner-address").textContent = dog.address;
+
+      document.getElementById("paper-vac-name").textContent = dog.vaccineName;
+      document.getElementById("paper-vac-date").textContent = dog.vaccineDate;
+      document.getElementById("paper-vac-next").textContent = dog.vaccineNextDate;
+
+      const qrPayload = `DOG WORLD OFFICIAL PAPER\nNAME: ${(dog.name || "").toUpperCase()}\nAGE: ${dogAge}\nOWNER: ${dog.owner}\nPHONE: +91 ${dog.mobile}`;
       try {
-        const qrCanvas = document.getElementById("card-qr-canvas");
         new QRious({
-          element: qrCanvas,
+          element: document.getElementById("paper-qr-canvas"),
           value: qrPayload,
-          size: 110,
+          size: 75,
           level: 'M'
         });
       } catch (err) {
         console.error("QR Error:", err);
       }
+
+      document.getElementById("modal-share-paper").classList.remove("hidden");
     }
 
-    function openIdCardModal(dogId) {
-      const dogIdx = registeredDogs.findIndex(d => d.id === dogId);
-      const dog = registeredDogs[dogIdx];
-      if (!dog) return;
-
-      activeCardDog = dog;
-      const serialData = generateSerial(dog, dogIdx + 1);
-
-      document.getElementById("card-front-name").textContent = (dog.name || "").toUpperCase();
-      document.getElementById("card-front-dob").textContent = dog.dob;
-      document.getElementById("card-front-father").textContent = (dog.father || "ADOPTED").toUpperCase();
-      document.getElementById("card-front-mother").textContent = (dog.mother || "ADOPTED").toUpperCase();
-      document.getElementById("card-front-owner").textContent = dog.owner;
-      document.getElementById("card-front-gender").textContent = (dog.gender || "MALE").toUpperCase();
-      document.getElementById("card-front-serial").innerHTML = serialData.formatted;
-      document.getElementById("card-front-subid").textContent = `CANINE ID: ${serialData.shortId}`;
-
-      document.getElementById("card-back-owner-en").textContent = dog.owner;
-      document.getElementById("card-back-addr-en").textContent = dog.address;
-      document.getElementById("card-back-phone-en").textContent = "+91 " + dog.mobile;
-      document.getElementById("card-back-vac-en").textContent = `${dog.vaccineName} (${dog.vaccineDate})`;
-      document.getElementById("card-back-serial").innerHTML = serialData.formatted;
-      document.getElementById("card-back-subid").textContent = `CANINE ID: ${serialData.shortId}`;
-      document.getElementById("card-back-helpline").textContent = `+91 ${dog.mobile} | ${dog.email}`;
-
-      switchPvcTab("front");
-      document.getElementById("modal-idcard").classList.remove("hidden");
+    function closeSharePaperModal() {
+      document.getElementById("modal-share-paper").classList.add("hidden");
+      activeShareDog = null;
     }
 
-    function closeIdCardModal() {
-      document.getElementById("modal-idcard").classList.add("hidden");
-      activeCardDog = null;
-    }
+    async function downloadPaperSheetImage() {
+      if (!activeShareDog) return;
 
-    function switchPvcTab(tab) {
-      currentPvcTab = tab;
-      const front = document.getElementById("pvc-front-view");
-      const back = document.getElementById("pvc-back-view");
-      const tabFront = document.getElementById("pvc-tab-front");
-      const tabBack = document.getElementById("pvc-tab-back");
-
-      if (tab === "front") {
-        front.classList.remove("hidden");
-        back.classList.add("hidden");
-        tabFront.className = "px-3 py-1 rounded-lg dog-logo-box shadow-sm";
-        tabBack.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
-      } else {
-        front.classList.add("hidden");
-        back.classList.remove("hidden");
-        tabBack.className = "px-3 py-1 rounded-lg dog-logo-box shadow-sm";
-        tabFront.className = "px-3 py-1 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300";
-        if (activeCardDog) {
-          drawCardQrCode(activeCardDog);
-        }
-      }
-    }
-
-    async function downloadIdCardImage() {
-      if (!activeCardDog) return;
-
-      const btn = document.getElementById("btn-download-png");
+      const btn = document.getElementById("btn-download-paper");
       const oldHtml = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>`;
 
-      const target = currentPvcTab === "front"
-        ? document.getElementById("pvc-front-view")
-        : document.getElementById("pvc-back-view");
+      const target = document.getElementById("paper-export-sheet");
 
       try {
         const canvas = await html2canvas(target, {
@@ -1725,34 +1763,41 @@
 
         const dataUrl = canvas.toDataURL("image/png");
         const link = document.createElement("a");
-        link.download = `${(activeCardDog.name || "DOG").toUpperCase()}-Canine-Card-${currentPvcTab.toUpperCase()}.png`;
+        link.download = `${(activeShareDog.name || "DOG").toUpperCase()}-Official-Record-Paper.png`;
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        showToast(`🎉 ${(activeCardDog.name || "").toUpperCase()}'s card downloaded!`, "success");
+        showToast(`🎉 ${(activeShareDog.name || "").toUpperCase()}'s Record Paper saved!`, "success");
       } catch (err) {
-        showToast("Error generating card image. Please try again.", "error");
+        showToast("Error generating image. Please try again.", "error");
       } finally {
         btn.disabled = false;
         btn.innerHTML = oldHtml;
       }
     }
 
-    function shareIdCardWhatsApp() {
-      if (!activeCardDog) return;
+    function sharePaperWhatsApp() {
+      if (!activeShareDog) return;
+      const ageStr = calculateDogAge(activeShareDog.dob);
 
-      const msg = `🐾 *DOG WORLD Canine Identity Card*\n\n` +
-        `🐶 *Name:* ${(activeCardDog.name || "").toUpperCase()}\n` +
-        `📅 *DOB:* ${activeCardDog.dob}\n` +
-        `🧬 *Father:* ${(activeCardDog.father || "ADOPTED").toUpperCase()}\n` +
-        `🧬 *Mother:* ${(activeCardDog.mother || "ADOPTED").toUpperCase()}\n` +
-        `👤 *Owner:* ${activeCardDog.owner}\n` +
-        `📞 *Contact:* +91 ${activeCardDog.mobile}\n` +
-        `💉 *Last Vaccine:* ${activeCardDog.vaccineName} (${activeCardDog.vaccineDate})\n` +
-        `🏡 *Address:* ${activeCardDog.address}\n\n` +
-        `_Registered on DOG WORLD Platform_`;
+      const msg = `📜 *DOG WORLD — OFFICIAL CANINE RECORD SHEET*\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `🐶 *Dog Name:* ${(activeShareDog.name || "").toUpperCase()}\n` +
+        `📅 *DOB:* ${activeShareDog.dob} (*Age:* ${ageStr})\n` +
+        `⚧ *Gender:* ${(activeShareDog.gender || "").toUpperCase()}\n` +
+        `🧬 *Father:* ${(activeShareDog.father || "ADOPTED").toUpperCase()}\n` +
+        `🧬 *Mother:* ${(activeShareDog.mother || "ADOPTED").toUpperCase()}\n\n` +
+        `👤 *Owner Name:* ${activeShareDog.owner}\n` +
+        `📞 *Mobile:* +91 ${activeShareDog.mobile}\n` +
+        `✉️ *Email:* ${activeShareDog.email}\n` +
+        `🏡 *Address:* ${activeShareDog.address}\n\n` +
+        `💉 *Latest Vaccine:* ${activeShareDog.vaccineName}\n` +
+        `🗓️ *Given Date:* ${activeShareDog.vaccineDate}\n` +
+        `🔔 *Next Booster Due:* ${activeShareDog.vaccineNextDate}\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ _Verified by DOG WORLD Digital Canine Registry_`;
 
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
@@ -1780,11 +1825,12 @@
     window.closeVaccineModal = closeVaccineModal;
     window.calcDoseNextDate = calcDoseNextDate;
     window.handleAddNewDose = handleAddNewDose;
-    window.openIdCardModal = openIdCardModal;
-    window.closeIdCardModal = closeIdCardModal;
-    window.switchPvcTab = switchPvcTab;
-    window.downloadIdCardImage = downloadIdCardImage;
-    window.shareIdCardWhatsApp = shareIdCardWhatsApp;
+    window.handleEPvcClick = handleEPvcClick;
+    window.closeComingSoonModal = closeComingSoonModal;
+    window.openSharePaperModal = openSharePaperModal;
+    window.closeSharePaperModal = closeSharePaperModal;
+    window.downloadPaperSheetImage = downloadPaperSheetImage;
+    window.sharePaperWhatsApp = sharePaperWhatsApp;
   </script>
 </body>
 </html>
